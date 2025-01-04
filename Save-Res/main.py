@@ -17,7 +17,8 @@ api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 bot = Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
-ss = os.getenv('SESSION')
+# ss = os.getenv('SESSION')
+ss = None
 if ss is not None:
 	acc = Client("auto_telegram_0212" ,api_id=api_id, api_hash=api_hash, session_string=ss)
 	acc.start()
@@ -73,6 +74,8 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	print(message.text)
+	message.delete()
+
 
 	# joining chats
 	if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
@@ -146,7 +149,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 						# else:
 						# 	file_id = None
 					else:
-						bot.copy_media_group(message.chat.id, msg.chat.id, msg.id, reply_to_message_id=message.id)
+						bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 				except:
 					if acc is None:
 						bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
