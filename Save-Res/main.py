@@ -138,18 +138,9 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					return
 				try:
 					if '?single' not in message.text:
-						bot.copy_message(message.chat.id, msg.chat.id, msg.id, reply_to_message_id=message.id)
-						# if X.video:
-						# 	file_id = X.video.file_id
-						# 	bot.send_video("-1002000065757", file_id)
-						# elif X.photo:
-						# 	file_id = X.photo[-1].file_id  # Highest resolution photo
-						# elif X.document:
-						# 	file_id = X.document.file_id
-						# else:
-						# 	file_id = None
+						bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 					else:
-						bot.copy_media_group(message.chat.id, '-1002000065757', msg.id)
+						bot.copy_media_group(message.chat.id, -1002000065757, msg.id)
 				except:
 					if acc is None:
 						bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
