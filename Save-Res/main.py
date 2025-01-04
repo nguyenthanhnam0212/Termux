@@ -149,7 +149,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 						# else:
 						# 	file_id = None
 					else:
-						bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
+						bot.copy_media_group('-1002000065757', msg.chat.id, msg.id)
 				except:
 					if acc is None:
 						bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
