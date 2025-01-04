@@ -10,7 +10,7 @@ import json
 
 import os
 from dotenv import load_dotenv
-load_dotenv("env/.env")
+load_dotenv()
 
 bot_token = os.getenv('TOKEN')
 api_hash = os.getenv('API_HASH')

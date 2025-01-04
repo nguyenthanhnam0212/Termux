@@ -4,7 +4,7 @@ from telebot.async_telebot import AsyncTeleBot
 
 import os
 from dotenv import load_dotenv
-load_dotenv("env/.env")
+load_dotenv()
 
 bot = AsyncTeleBot(os.getenv('TOKEN_DEV'))
 
