@@ -81,19 +81,19 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
 		if acc is None:
-			bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+			bot.send_message(message.chat.id,f"**String Session is not Set**")
 			return
 
 		try:
 			try: acc.join_chat(message.text)
 			except Exception as e: 
-				bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
+				bot.send_message(message.chat.id,f"**Error** : __{e}__")
 				return
-			bot.send_message(message.chat.id,"**Chat Joined**", reply_to_message_id=message.id)
+			bot.send_message(message.chat.id,"**Chat Joined**")
 		except UserAlreadyParticipant:
-			bot.send_message(message.chat.id,"**Chat alredy Joined**", reply_to_message_id=message.id)
+			bot.send_message(message.chat.id,"**Chat alredy Joined**")
 		except InviteHashExpired:
-			bot.send_message(message.chat.id,"**Invalid Link**", reply_to_message_id=message.id)
+			bot.send_message(message.chat.id,"**Invalid Link**")
 
 	# getting message
 	elif "https://t.me/" in message.text:
@@ -111,22 +111,22 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 				chatid = int("-100" + datas[4])
 				
 				if acc is None:
-					bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+					bot.send_message(message.chat.id,f"**String Session is not Set**")
 					return
 				
 				handle_private(message,chatid,msgid)
 				# try: handle_private(message,chatid,msgid)
-				# except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
+				# except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__")
 			
 			# bot
 			elif "https://t.me/b/" in message.text:
 				username = datas[4]
 				
 				if acc is None:
-					bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+					bot.send_message(message.chat.id,f"**String Session is not Set**")
 					return
 				try: handle_private(message,username,msgid)
-				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
+				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__")
 
 			# public
 			else:
@@ -134,19 +134,19 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 
 				try: msg  = bot.get_messages(username,msgid)
 				except UsernameNotOccupied: 
-					bot.send_message(message.chat.id,f"**The username is not occupied by anyone**", reply_to_message_id=message.id)
+					bot.send_message(message.chat.id,f"**The username is not occupied by anyone**")
 					return
 				try:
 					if '?single' not in message.text:
 						bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 					else:
-						bot.copy_media_group(message.chat.id, -1002000065757, msg.id)
+						bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 				except:
 					if acc is None:
-						bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+						bot.send_message(message.chat.id,f"**String Session is not Set**")
 						return
 					try: handle_private(message,username,msgid)
-					except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
+					except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__")
 
 			# wait time
 			time.sleep(3)
@@ -158,10 +158,10 @@ def handle_private(message: pyrogram.types.messages_and_media.message.Message, c
 		msg_type = get_message_type(msg)
 
 		if "Text" == msg_type:
-			bot.send_message(message.chat.id, msg.text, entities=msg.entities, reply_to_message_id=message.id)
+			bot.send_message(message.chat.id, msg.text, entities=msg.entities)
 			return
 
-		smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.id)
+		smsg = bot.send_message(message.chat.id, '__Downloading__')
 		dosta = threading.Thread(target=lambda:downstatus(f'{message.id}downstatus.txt',smsg),daemon=True)
 		dosta.start()
 		file = acc.download_media(msg, progress=progress, progress_args=[message,"down"])
@@ -175,34 +175,34 @@ def handle_private(message: pyrogram.types.messages_and_media.message.Message, c
 				thumb = acc.download_media(msg.document.thumbs[0].file_id)
 			except: thumb = None
 			
-			bot.send_document(message.chat.id, file, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, reply_to_message_id=message.id, progress=progress, progress_args=[message,"up"])
+			bot.send_document(message.chat.id, file, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
 			if thumb != None: os.remove(thumb)
 		elif "Video" == msg_type:
 			try: 
 				thumb = acc.download_media(msg.video.thumbs[0].file_id)
 			except: thumb = None
-			bot.send_video(message.chat.id, file, duration=msg.video.duration, width=msg.video.width, height=msg.video.height, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, reply_to_message_id=message.id, progress=progress, progress_args=[message,"up"])
+			bot.send_video(message.chat.id, file, duration=msg.video.duration, width=msg.video.width, height=msg.video.height, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
 			if thumb != None: os.remove(thumb)
 
 		elif "Animation" == msg_type:
-			bot.send_animation(message.chat.id, file, reply_to_message_id=message.id)
+			bot.send_animation(message.chat.id, file)
 			   
 		elif "Sticker" == msg_type:
-			bot.send_sticker(message.chat.id, file, reply_to_message_id=message.id)
+			bot.send_sticker(message.chat.id, file)
 
 		elif "Voice" == msg_type:
-			bot.send_voice(message.chat.id, file, caption=msg.caption, thumb=thumb, caption_entities=msg.caption_entities, reply_to_message_id=message.id, progress=progress, progress_args=[message,"up"])
+			bot.send_voice(message.chat.id, file, caption=msg.caption, thumb=thumb, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
 
 		elif "Audio" == msg_type:
 			try:
 				thumb = acc.download_media(msg.audio.thumbs[0].file_id)
 			except: thumb = None
 				
-			bot.send_audio(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities, reply_to_message_id=message.id, progress=progress, progress_args=[message,"up"])   
+			bot.send_audio(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])   
 			if thumb != None: os.remove(thumb)
 
 		elif "Photo" == msg_type:
-			bot.send_photo(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities, reply_to_message_id=message.id)
+			bot.send_photo(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities)
 
 		os.remove(file)
 		if os.path.exists(f'{message.id}upstatus.txt'): os.remove(f'{message.id}upstatus.txt')
