@@ -46,7 +46,7 @@ class temp_db():
         return record
     
     def truncate_temp(self):
-        session.execute(text("TRUNCATE TABLE temp_storage RESTART IDENTITY CASCADE"))
+        session.execute(text("DELETE FROM temp_storage"))
         session.commit()
         session.close()
 
@@ -65,3 +65,6 @@ class temp_db():
         session.rollback()
     
 session.close()
+
+
+temp_db().truncate_temp()
