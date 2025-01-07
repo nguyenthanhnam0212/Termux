@@ -150,7 +150,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 						except:
 							links_force(links=message.text, note=username, status=1).save_to_links()
 							if acc is None:
-								print(f"**String Session is not Set**")
+								print(f"**String Session is not Set - Inserted Database**")
 							# try: handle_private(message,username,msgid)
 							# except Exception as e: print(f"**Error** : __{e}__")
 
