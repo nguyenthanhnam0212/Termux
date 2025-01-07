@@ -8,6 +8,8 @@ import os
 import threading
 import json
 
+from sqlite_db import links_force
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -146,11 +148,12 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 							bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
 							# bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 					except:
-						if acc is None:
-							bot.send_message(message.chat.id,f"**String Session is not Set**")
-							# return
-						try: handle_private(message,username,msgid)
-						except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__")
+						links_force(links=message.text, note=username, status=1).save_to_links()
+						# if acc is None:
+						# 	bot.send_message(message.chat.id,f"**String Session is not Set**")
+						# 	return
+						# try: handle_private(message,username,msgid)
+						# except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__")
 
 				# wait time
 				time.sleep(3)

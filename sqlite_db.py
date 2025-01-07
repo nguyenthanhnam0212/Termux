@@ -19,6 +19,13 @@ class temp_storage(Base):
     note = Column(String)
     status = Column(Integer)
 
+class save_links(Base):
+    __tablename__ = "save_links"
+    id = Column(Integer, primary_key=True)
+    links = Column(String)
+    note = Column(String)
+    status = Column(Integer)
+
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -60,11 +67,20 @@ class temp_db():
         session.close()
         return var
 
-    
     def reset():
         session.rollback()
+
+class links_force():
+    def __init__(self, links = None,  note = None, status = 1):
+        self.links = links
+        self.note = note
+        self.status = status
+
+    def save_to_links(self):
+        sql = save_links(links=self.links, note = self.note, status = self.status)
+        session.add(sql)
+        session.commit()
+        session.close()
+
     
 session.close()
-
-
-temp_db().truncate_temp()
