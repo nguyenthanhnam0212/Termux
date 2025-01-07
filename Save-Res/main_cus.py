@@ -78,6 +78,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	msgid = range(4,9149)
 	for i in msgid:
 		message.text = f"https://t.me/pssjs/{i}"
+		print(message.text)
 		# joining chats
 		if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
