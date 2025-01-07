@@ -17,8 +17,8 @@ api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 bot = Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
-# ss = os.getenv('SESSION')
-ss = None
+ss = os.getenv('SESSION')
+# ss = None
 if ss is not None:
 	acc = Client("auto_telegram_0212" ,api_id=api_id, api_hash=api_hash, session_string=ss)
 	acc.start()
@@ -138,9 +138,11 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					return
 				try:
 					if '?single' not in message.text:
-						bot.copy_message(message.chat.id, msg.chat.id, msg.id)
+						bot.copy_message(-1001723907536, msg.chat.id, msg.id)
+						# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 					else:
-						bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
+						bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
+						# bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 				except:
 					if acc is None:
 						bot.send_message(message.chat.id,f"**String Session is not Set**")
