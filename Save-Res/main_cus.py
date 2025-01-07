@@ -176,39 +176,40 @@ def handle_private(message: pyrogram.types.messages_and_media.message.Message, c
 		upsta = threading.Thread(target=lambda:upstatus(f'{message.id}upstatus.txt',smsg),daemon=True)
 		upsta.start()
 		
-		if "Document" == msg_type:
-			try:
-				thumb = acc.download_media(msg.document.thumbs[0].file_id)
-			except: thumb = None
-			
-			bot.send_document(message.chat.id, file, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
-			if thumb != None: os.remove(thumb)
-		elif "Video" == msg_type:
+		if "Video" == msg_type:
 			try: 
 				thumb = acc.download_media(msg.video.thumbs[0].file_id)
 			except: thumb = None
 			bot.send_video(message.chat.id, file, duration=msg.video.duration, width=msg.video.width, height=msg.video.height, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
 			if thumb != None: os.remove(thumb)
 
-		elif "Animation" == msg_type:
-			bot.send_animation(message.chat.id, file)
-			   
-		elif "Sticker" == msg_type:
-			bot.send_sticker(message.chat.id, file)
-
-		elif "Voice" == msg_type:
-			bot.send_voice(message.chat.id, file, caption=msg.caption, thumb=thumb, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
-
-		elif "Audio" == msg_type:
-			try:
-				thumb = acc.download_media(msg.audio.thumbs[0].file_id)
-			except: thumb = None
-				
-			bot.send_audio(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])   
-			if thumb != None: os.remove(thumb)
-
 		elif "Photo" == msg_type:
 			bot.send_photo(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities)
+
+		# elif "Document" == msg_type:
+		# 	try:
+		# 		thumb = acc.download_media(msg.document.thumbs[0].file_id)
+		# 	except: thumb = None
+			
+		# 	bot.send_document(message.chat.id, file, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
+		# 	if thumb != None: os.remove(thumb)
+
+		# elif "Animation" == msg_type:
+		# 	bot.send_animation(message.chat.id, file)
+			   
+		# elif "Sticker" == msg_type:
+		# 	bot.send_sticker(message.chat.id, file)
+
+		# elif "Voice" == msg_type:
+		# 	bot.send_voice(message.chat.id, file, caption=msg.caption, thumb=thumb, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
+
+		# elif "Audio" == msg_type:
+		# 	try:
+		# 		thumb = acc.download_media(msg.audio.thumbs[0].file_id)
+		# 	except: thumb = None
+				
+		# 	bot.send_audio(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])   
+		# 	if thumb != None: os.remove(thumb)
 
 		os.remove(file)
 		if os.path.exists(f'{message.id}upstatus.txt'): os.remove(f'{message.id}upstatus.txt')
@@ -217,35 +218,6 @@ def handle_private(message: pyrogram.types.messages_and_media.message.Message, c
 
 # get the type of message
 def get_message_type(msg: pyrogram.types.messages_and_media.message.Message):
-	try:
-		msg.document.file_id
-		return "Document"
-	except: pass
-
-	try:
-		msg.video.file_id
-		return "Video"
-	except: pass
-
-	try:
-		msg.animation.file_id
-		return "Animation"
-	except: pass
-
-	try:
-		msg.sticker.file_id
-		return "Sticker"
-	except: pass
-
-	try:
-		msg.voice.file_id
-		return "Voice"
-	except: pass
-
-	try:
-		msg.audio.file_id
-		return "Audio"
-	except: pass
 
 	try:
 		msg.photo.file_id
@@ -253,10 +225,39 @@ def get_message_type(msg: pyrogram.types.messages_and_media.message.Message):
 	except: pass
 
 	try:
-		msg.text
-		return "Text"
+		msg.video.file_id
+		return "Video"
 	except: pass
 
+	# try:
+	# 	msg.document.file_id
+	# 	return "Document"
+	# except: pass
+
+	# try:
+	# 	msg.animation.file_id
+	# 	return "Animation"
+	# except: pass
+
+	# try:
+	# 	msg.sticker.file_id
+	# 	return "Sticker"
+	# except: pass
+
+	# try:
+	# 	msg.voice.file_id
+	# 	return "Voice"
+	# except: pass
+
+	# try:
+	# 	msg.audio.file_id
+	# 	return "Audio"
+	# except: pass
+
+	# try:
+	# 	msg.text
+	# 	return "Text"
+	# except: pass
 
 USAGE = """**FOR PUBLIC CHATS**
 
