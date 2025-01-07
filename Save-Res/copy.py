@@ -186,31 +186,6 @@ def handle_private(message: pyrogram.types.messages_and_media.message.Message, c
 		elif "Photo" == msg_type:
 			bot.send_photo(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities)
 
-		# elif "Document" == msg_type:
-		# 	try:
-		# 		thumb = acc.download_media(msg.document.thumbs[0].file_id)
-		# 	except: thumb = None
-			
-		# 	bot.send_document(message.chat.id, file, thumb=thumb, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
-		# 	if thumb != None: os.remove(thumb)
-
-		# elif "Animation" == msg_type:
-		# 	bot.send_animation(message.chat.id, file)
-			   
-		# elif "Sticker" == msg_type:
-		# 	bot.send_sticker(message.chat.id, file)
-
-		# elif "Voice" == msg_type:
-		# 	bot.send_voice(message.chat.id, file, caption=msg.caption, thumb=thumb, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])
-
-		# elif "Audio" == msg_type:
-		# 	try:
-		# 		thumb = acc.download_media(msg.audio.thumbs[0].file_id)
-		# 	except: thumb = None
-				
-		# 	bot.send_audio(message.chat.id, file, caption=msg.caption, caption_entities=msg.caption_entities, progress=progress, progress_args=[message,"up"])   
-		# 	if thumb != None: os.remove(thumb)
-
 		os.remove(file)
 		if os.path.exists(f'{message.id}upstatus.txt'): os.remove(f'{message.id}upstatus.txt')
 		bot.delete_messages(message.chat.id,[smsg.id])
@@ -229,41 +204,11 @@ def get_message_type(msg: pyrogram.types.messages_and_media.message.Message):
 		return "Video"
 	except: pass
 
-	# try:
-	# 	msg.document.file_id
-	# 	return "Document"
-	# except: pass
+USAGE = """**VỚI NHÓM/KÊNH CÔNG CỘNG**
 
-	# try:
-	# 	msg.animation.file_id
-	# 	return "Animation"
-	# except: pass
+__Chỉ cần gửi link__
 
-	# try:
-	# 	msg.sticker.file_id
-	# 	return "Sticker"
-	# except: pass
-
-	# try:
-	# 	msg.voice.file_id
-	# 	return "Voice"
-	# except: pass
-
-	# try:
-	# 	msg.audio.file_id
-	# 	return "Audio"
-	# except: pass
-
-	# try:
-	# 	msg.text
-	# 	return "Text"
-	# except: pass
-
-USAGE = """**FOR PUBLIC CHATS**
-
-__just send post/s link__
-
-**FOR PRIVATE CHATS**
+**VỚI NHÓM/KÊNH BÍ MẬT**
 
 __first send invite link of the chat (unnecessary if the account of string session already member of the chat)
 then send post/s link__
