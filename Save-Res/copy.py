@@ -76,9 +76,9 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	message.delete()
-	msgid = range(7952, 9149)
+	msgid = range(71, 7516)
 	for i in msgid:
-		message.text = f"https://t.me/pssjs/{i}"
+		message.text = f"https://t.me/vnsexyhot/{i}"
 		print(message.text)
 		# joining chats
 		if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
@@ -139,10 +139,10 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					except UsernameNotOccupied: 
 						bot.send_message(message.chat.id,f"**The username is not occupied by anyone**")
 						return
-					if get_message_type(msg) in ['Video', 'Photo']:
+					if get_message_type(msg) in ['Photo']:
 						try:
 							if '?single' not in message.text:
-								bot.copy_message(-1001723907536, msg.chat.id, msg.id)
+								bot.copy_message(-1002329624602, msg.chat.id, msg.id)
 								# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 							else:
 								bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
