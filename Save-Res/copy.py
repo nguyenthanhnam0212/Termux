@@ -76,7 +76,7 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	# message.delete()
-	uss = "vnsexyhot"
+	uss = "nguclep"
 	mess = message.text
 	if "-" in mess:
 		arr_id = mess.split("-")
