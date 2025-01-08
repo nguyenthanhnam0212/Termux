@@ -76,7 +76,7 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	# message.delete()
-	uss = "nguclep"
+	uss = "pornodrive"
 	mess = message.text
 	if "-" in mess:
 		arr_id = mess.split("-")
@@ -148,10 +148,10 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					except UsernameNotOccupied: 
 						bot.send_message(message.chat.id,f"**The username is not occupied by anyone**")
 						return
-					if get_message_type(msg) in ['Photo','Videos']:
+					if get_message_type(msg) in ['Photo','Video']:
 						try:
 							if '?single' not in message.text:
-								bot.copy_message(-1001742401533, msg.chat.id, msg.id)
+								bot.copy_message(-1002069066600, msg.chat.id, msg.id)
 								# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 							else:
 								bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
