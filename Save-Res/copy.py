@@ -161,9 +161,9 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 								print(f"**String Session is not Set - Inserted Database**")
 							# try: handle_private(message,username,msgid)
 							# except Exception as e: print(f"**Error** : __{e}__")
-
+						time.sleep(3)
 				# wait time
-				time.sleep(3)
+				# time.sleep(3)
 
 
 # handle private
