@@ -88,7 +88,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	msgid = range(from_id, to_id)
 	for i in tqdm(msgid, desc="Forwarding", unit="Post"):
 		message.text = f"https://t.me/{uss}/{i}"
-		print(f"\rCompleted ID: {i} / {to_id-1}", end='', flush=True)
+		print(f"\rCompleted ID: {i} / {to_id-1}  ", end='', flush=True)
 		# joining chats
 		if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
@@ -158,7 +158,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 								# bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 						except:
 							if acc is None:
-								print(f"**String Session is not Set - Inserted Database**")
+								print(f"**String Session is not Set - Skipped**")
 							# try: handle_private(message,username,msgid)
 							# except Exception as e: print(f"**Error** : __{e}__")
 						time.sleep(3)
