@@ -76,7 +76,7 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	message.delete()
-	msgid = range(71, 7516)
+	msgid = range(2163, 7516)
 	for i in msgid:
 		message.text = f"https://t.me/vnsexyhot/{i}"
 		print(message.text)
