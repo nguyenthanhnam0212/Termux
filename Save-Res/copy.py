@@ -8,8 +8,6 @@ import os
 import threading
 import json
 
-from sqlite_db import links_force
-
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -142,13 +140,12 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					if get_message_type(msg) in ['Photo','Videos']:
 						try:
 							if '?single' not in message.text:
-								bot.copy_message(-1001723907536, msg.chat.id, msg.id)
+								bot.copy_message(-1001742401533, msg.chat.id, msg.id)
 								# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 							else:
 								bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
 								# bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 						except:
-							links_force(links=message.text, note=username, status=1).save_to_links()
 							if acc is None:
 								print(f"**String Session is not Set - Inserted Database**")
 							# try: handle_private(message,username,msgid)
