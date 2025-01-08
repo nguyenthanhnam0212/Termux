@@ -23,6 +23,8 @@ class save_links(Base):
     __tablename__ = "save_links"
     id = Column(Integer, primary_key=True)
     links = Column(String)
+    username = Column(String)
+    msgid = Column(Integer)
     note = Column(String)
     status = Column(Integer)
 
@@ -71,16 +73,25 @@ class temp_db():
         session.rollback()
 
 class links_force():
-    def __init__(self, links = None,  note = None, status = 1):
+    def __init__(self, links = None, username = None, msgid = None, note = None, status = 1):
         self.links = links
+        self.username = username
+        self.msgid = msgid
         self.note = note
         self.status = status
 
     def save_to_links(self):
-        sql = save_links(links=self.links, note = self.note, status = self.status)
+        sql = save_links(links = self.links, username = self.username, msgid = self.msgid, note = self.note, status = self.status)
         session.add(sql)
         session.commit()
         session.close()
 
-    
 session.close()
+
+
+
+# link = input("Enter link: ")
+# arry = link.split("/")
+# usename = arry[3]
+# msgid = arry[4]
+# links_force(links = link, username = usename, msgid = msgid).save_to_links()
