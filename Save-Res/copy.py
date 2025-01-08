@@ -79,6 +79,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	# message.delete()
 
 	mess = message.text
+	bot.send_message(message.chat.id,f"```{mess}```", parse_mode="Markdown")
 	arr_mess = mess.split(":")
 	uss = arr_mess[0].strip()
 	to_id = int(arr_mess[1].strip())+1
@@ -161,7 +162,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 							# try: handle_private(message,username,msgid)
 							# except Exception as e: print(f"**Error** : __{e}__")
 						time.sleep(3)
-				links_force(username=uss, msgid=i).update_inf()
+				links_force(username=uss, msgid=i).update_links()
 				# wait time
 				# time.sleep(3)
 
