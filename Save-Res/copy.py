@@ -73,10 +73,19 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-	message.delete()
-	msgid = range(2163, 7516)
+	# message.delete()
+	uss = "vnsexyhot"
+	mess = message.text
+	if "-" in mess:
+		arr_id = mess.split("-")
+		from_id = int(arr_id[0].strip())	
+		to_id = int(arr_id[1].strip())+1
+	else:
+		from_id = int(mess)
+		to_id = int(mess)+ 1
+	msgid = range(from_id, to_id)
 	for i in msgid:
-		message.text = f"https://t.me/vnsexyhot/{i}"
+		message.text = f"https://t.me/{uss}/{i}"
 		print(message.text)
 		# joining chats
 		if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
