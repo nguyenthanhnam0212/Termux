@@ -25,7 +25,8 @@ class save_links(Base):
     links = Column(String)
     username = Column(String)
     msgid = Column(Integer)
-    target_channel = Column(String)
+    target_channel = Column(Integer)
+    media_type = Column(String)
     note = Column(String)
     status = Column(Integer)
 
@@ -74,10 +75,12 @@ class temp_db():
         session.rollback()
 
 class links_force():
-    def __init__(self, links = None, username = None, msgid = None, note = None, status = 1):
+    def __init__(self, links = None, username = None, msgid = None, target_channel = None, media_type = None, note = None, status = 1):
         self.links = links
         self.username = username
         self.msgid = msgid
+        self.target_channel = target_channel
+        self.media_type = media_type
         self.note = note
         self.status = status
 

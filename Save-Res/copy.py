@@ -83,7 +83,9 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	uss = arr_mess[0].strip()
 	to_id = int(arr_mess[1].strip())+1
 	inf = links_force(username=uss).get_inf()
+	type_media = inf.media_type.split(",")
 	from_id = inf.msgid
+	target_id = inf.target_channel
 
 	for i in tqdm(range(from_id, to_id), desc="Forwarding", unit="Post"):
 		message.text = f"https://t.me/{uss}/{i}"
@@ -147,10 +149,10 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					except UsernameNotOccupied: 
 						bot.send_message(message.chat.id,f"**The username is not occupied by anyone**")
 						return
-					if get_message_type(msg) in ['Photo','Videos']:
+					if get_message_type(msg) in type_media:
 						try:
 							if '?single' not in message.text:
-								bot.copy_message(int(inf.target_channel), msg.chat.id, msg.id)
+								bot.copy_message(target_id, msg.chat.id, msg.id)
 								# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 							else:
 								bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
