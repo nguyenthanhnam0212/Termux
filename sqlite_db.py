@@ -97,8 +97,3 @@ class links_force():
         return record
     
 session.close()
-
-
-# links_force(username='nguclep', msgid=3227).update_links()
-# X = links_force(username='nguclep').get_inf()
-# print(X.username)
