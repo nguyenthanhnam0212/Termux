@@ -49,8 +49,8 @@ async def welcome(message):
 async def handle_mess(message):
     if message.text:
         if re.search(r"[0-9]{12,13}", message.text):
-            g_val['id_channel'] = message.text
-        await bot.send_message(message.chat.id, f"Selected: `{g_val['id_channel']}`", parse_mode="Markdown")
+            g_val['channel_id'] = message.text
+        await bot.send_message(message.chat.id, f"Selected: `{g_val['channel_id']}`", parse_mode="Markdown")
     match g_val['command']:
         case 'start':
             if message.video :
@@ -60,10 +60,10 @@ async def handle_mess(message):
                     cap = f"{file_caption}\n{file_name}"
                 except:
                     cap = message.caption
-                await bot.send_video(chat_id = g_val['id_channel'], video = message.video.file_id, caption = cap)
+                await bot.send_video(chat_id = g_val['channel_id'], video = message.video.file_id, caption = cap)
                 await bot.delete_message(message.chat.id, message.id)
             elif message.photo:
-                await bot.send_photo(chat_id = g_val['id_channel'], photo = message.photo[-1].file_id)
+                await bot.send_photo(chat_id = g_val['channel_id'], photo = message.photo[-1].file_id)
                 await bot.delete_message(message.chat.id, message.id)
     
         case 'gr':
