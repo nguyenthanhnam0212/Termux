@@ -25,6 +25,7 @@ class save_links(Base):
     links = Column(String)
     username = Column(String)
     msgid = Column(Integer)
+    target_channel = Column(String)
     note = Column(String)
     status = Column(Integer)
 
@@ -86,12 +87,18 @@ class links_force():
         session.commit()
         session.close()
 
+    def update_links(self):
+        session.query(save_links).filter(save_links.username == self.username).update({save_links.msgid: self.msgid})
+        session.commit()
+        session.close()
+
+    def get_inf(self):
+        record = session.query(save_links).filter(save_links.status == 1, save_links.username == self.username).first()
+        return record
+    
 session.close()
 
 
-
-# link = input("Enter link: ")
-# arry = link.split("/")
-# usename = arry[3]
-# msgid = arry[4]
-# links_force(links = link, username = usename, msgid = msgid).save_to_links()
+# links_force(username='nguclep', msgid=3227).update_links()
+# X = links_force(username='nguclep').get_inf()
+# print(X.username)

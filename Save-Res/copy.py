@@ -8,6 +8,7 @@ import os
 import threading
 import json
 
+from sqlite_db import temp_db, links_force
 from tqdm import tqdm
 
 import os
@@ -76,17 +77,15 @@ def send_start(client: pyrogram.client.Client, message: pyrogram.types.messages_
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	# message.delete()
-	uss = "pornodrive"
+
 	mess = message.text
-	if "-" in mess:
-		arr_id = mess.split("-")
-		from_id = int(arr_id[0].strip())	
-		to_id = int(arr_id[1].strip())+1
-	else:
-		from_id = int(mess)
-		to_id = int(mess)+ 1
-	msgid = range(from_id, to_id)
-	for i in tqdm(msgid, desc="Forwarding", unit="Post"):
+	arr_mess = mess.split(":")
+	uss = arr_mess[0].strip()
+	to_id = int(arr_mess[1].strip())+1
+	inf = links_force(username=uss).get_inf()
+	from_id = inf.msgid
+
+	for i in tqdm(range(from_id, to_id), desc="Forwarding", unit="Post"):
 		message.text = f"https://t.me/{uss}/{i}"
 		print(f"\rCompleted ID: {i} / {to_id-1}  ", end='', flush=True)
 		# joining chats
@@ -151,7 +150,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					if get_message_type(msg) in ['Photo','Video']:
 						try:
 							if '?single' not in message.text:
-								bot.copy_message(-1002069066600, msg.chat.id, msg.id)
+								bot.copy_message(int(inf.target_channel), msg.chat.id, msg.id)
 								# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 							else:
 								bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
@@ -162,6 +161,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 							# try: handle_private(message,username,msgid)
 							# except Exception as e: print(f"**Error** : __{e}__")
 						time.sleep(3)
+				links_force(username=uss, msgid=i).update_inf()
 				# wait time
 				# time.sleep(3)
 
