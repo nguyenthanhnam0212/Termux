@@ -86,7 +86,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	msgid = range(from_id, to_id)
 	for i in msgid:
 		message.text = f"https://t.me/{uss}/{i}"
-		print(f"\rCompleted ID {i} / {to_id-1}", end='', flush=True)
+		print(f"\rCompleted ID: {i} / {to_id-1}", end='', flush=True)
 		# joining chats
 		if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
