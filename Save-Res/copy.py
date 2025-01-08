@@ -148,7 +148,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					except UsernameNotOccupied: 
 						bot.send_message(message.chat.id,f"**The username is not occupied by anyone**")
 						return
-					if get_message_type(msg) in ['Photo','Video']:
+					if get_message_type(msg) in ['Photo','Videos']:
 						try:
 							if '?single' not in message.text:
 								bot.copy_message(int(inf.target_channel), msg.chat.id, msg.id)
