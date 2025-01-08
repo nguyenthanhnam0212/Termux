@@ -8,6 +8,8 @@ import os
 import threading
 import json
 
+from tqdm import tqdm
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -84,7 +86,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 		from_id = int(mess)
 		to_id = int(mess)+ 1
 	msgid = range(from_id, to_id)
-	for i in msgid:
+	for i in tqdm(msgid, desc="Forwarding", unit="Post"):
 		message.text = f"https://t.me/{uss}/{i}"
 		print(f"\rCompleted ID: {i} / {to_id-1}", end='', flush=True)
 		# joining chats
