@@ -86,9 +86,10 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	type_media = inf.media_type.split(",")
 	from_id = inf.msgid
 	target_id = inf.target_channel
+	print(f"From: {uss}\nTo: {target_id}\n\nForwarding......")
 	for i in tqdm(range(from_id, to_id), desc="Forwarding", unit="Post"):
 		message.text = f"https://t.me/{uss}/{i}"
-		print(f"\rCompleted ID: {i} / {to_id-1}  ", end='', flush=True)
+		print(f"\r{i} / {to_id-1}  ", end='', flush=True)
 		# joining chats
 		if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
