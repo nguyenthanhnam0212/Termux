@@ -32,7 +32,7 @@ else:
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
 	# message.delete()
 
-	mess = message.text
+	mess = os.getenv('VAL')
 	arr_mess = mess.split(":")
 	uss = arr_mess[0].strip()
 	to_id = int(arr_mess[1].strip())+1
