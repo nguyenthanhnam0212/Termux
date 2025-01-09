@@ -8,7 +8,7 @@ import os
 import threading
 import json
 
-from sqlite_db import temp_db, links_force
+from postgree import links_force
 from tqdm import tqdm
 
 import os
