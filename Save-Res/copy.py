@@ -6,7 +6,7 @@ import time
 import os
 import threading
 
-from postgree import links_force
+from sqlite_db import links_force
 from tqdm import tqdm
 
 import os
