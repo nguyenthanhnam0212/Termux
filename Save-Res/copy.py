@@ -161,7 +161,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 								print(f"**String Session is not Set - Skipped**")
 							# try: handle_private(message,username,msgid)
 							# except Exception as e: print(f"**Error** : __{e}__")
-						time.sleep(2)
+						time.sleep(3)
 				links_force(username=uss, msgid=i).update_links()
 				# wait time
 				# time.sleep(3)
