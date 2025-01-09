@@ -85,7 +85,7 @@ class links_force():
         self.status = status
 
     def save_to_links(self):
-        sql = save_links(links = self.links, username = self.username, msgid = self.msgid, note = self.note, status = self.status)
+        sql = save_links(links = self.links, username = self.username, msgid = self.msgid, target_channel = self.target_channel, media_type = self.media_type, note = self.note, status = self.status)
         session.add(sql)
         session.commit()
         session.close()
@@ -98,5 +98,14 @@ class links_force():
     def get_inf(self):
         record = session.query(save_links).filter(save_links.status == 1, save_links.username == self.username).first()
         return record
+    
+    def get_all_record(self):
+        record = session.query(save_links).all()
+        return record
+    
+    def truncate_save_links(self):
+        session.execute(text("DELETE FROM save_links"))
+        session.commit()
+        session.close()
     
 session.close()
