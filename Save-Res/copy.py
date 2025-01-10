@@ -15,24 +15,18 @@ api_id = os.getenv('API_ID')
 mess_end = os.getenv('MSG_ID')
 user_name = os.getenv('USER_NAME')
 inf = links_force(username=user_name).get_inf()
-media_list = inf.media_type.split(",")
+media_list = inf.media_type.upper().split(",")
 target_id = inf.target_channel
 mess_id = inf.msgid
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
 
-    def get_message_type(user_name, mess_id):
-        msg = bot.get_messages(user_name, mess_id)
-        type_media = str(msg.media)
-        if 'PHOTO' in type_media:
-            return 'Photo'
-        elif 'VIDEO' in type_media:
-            return 'Video'
-        
     chat = bot.get_chat(user_name)
     print(f"From: {user_name}\nTo: {target_id}\n\nForwarding......")
-    for i in tqdm(range(mess_id, int(mess_end) + 1), desc="Forwarding", unit="Post"):
-        if get_message_type(user_name = user_name, mess_id = mess_id) in media_list:
+    for i in tqdm(range(mess_id, int(mess_end)+1), desc="Forwarding", unit="Post"):
+        msg = bot.get_messages(user_name, i)
+        type_media = str(msg.media).replace('MessageMediaType.','').strip()
+        if type_media in media_list:
             try:
                 bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i)
                 print(f"\r{i} / {mess_end}  ", end='', flush=True)

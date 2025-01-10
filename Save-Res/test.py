@@ -10,7 +10,7 @@ api_id = os.getenv('API_ID')
 
 user_name = 'Timiys'
 target_id = -1002333974972
-mess_id = 7950
+mess_id = 652
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
 	chat = bot.get_chat('Timiys')
@@ -21,6 +21,6 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 		print(f"ERROR: {e}")
 
 
-	# msg = bot.get_messages('Timiys', mess_id)
+	# msg = bot.get_messages('Timiys', 652)
 	# print(str(msg.media))
 
