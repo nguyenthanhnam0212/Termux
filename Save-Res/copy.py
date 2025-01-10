@@ -26,6 +26,6 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
             bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=mess_id)
             print(f"\r{i} / {mess_end}  ", end='', flush=True)
         except Exception as e:
-            print(f"ERROR: {e}")
+            print(f"\ERROR: {i} / {mess_end}  ", end='', flush=True)
         links_force(username=os.getenv('USER_NAME'), msgid=i).update_links()
         time.sleep(3)
