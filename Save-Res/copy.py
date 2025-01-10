@@ -39,5 +39,5 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                 print(f"\r{i} / {mess_end}  ", end='', flush=True)
             except Exception as e:
                 print(f"ERROR: {i}")
-            links_force(username=os.getenv('USER_NAME'), msgid=i).update_links()
+            links_force(username=user_name, msgid=i).update_links()
             time.sleep(3)
