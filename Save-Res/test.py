@@ -1,7 +1,6 @@
 from pyrogram import Client
 import os
 from dotenv import load_dotenv
-from tqdm import tqdm
 
 load_dotenv()
 
