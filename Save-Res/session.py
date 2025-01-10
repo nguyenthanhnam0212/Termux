@@ -1,16 +1,20 @@
 from pyrogram import Client
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def main():
     print("Telegram String Session Generator\n")
-    APP_ID = "23629241"
-    API_HASH = "add19bbd1017dad77914ce4b5dfc94ec"
+    APP_ID = int(os.getenv('API_ID'))
+    API_HASH = os.getenv('API_HASH')
     print()
 
-    with Client("save_content_x_bot", api_id=APP_ID, api_hash=API_HASH, in_memory=True) as app:
+    with Client("SSGen", api_id=APP_ID, api_hash=API_HASH, in_memory=True) as app:
         session_str = app.export_session_string()
 
         if app.get_me().is_bot:
-            user_name = input("auto_telegram_0212")
+            #save_content_x_bot
+            user_name = 'auto_telegram_0212'
             app.send_message(user_name, "**Below is your String Session**")
             app.send_message(user_name, f'`{session_str}`')
         else:
