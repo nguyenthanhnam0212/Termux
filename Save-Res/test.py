@@ -15,12 +15,12 @@ mess_id = 652
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
 	chat = bot.get_chat('Timiys')
 	try:
-		bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=mess_id)
+		# bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=mess_id)
 		print("SUCCESS")
 	except Exception as e:
 		print(f"ERROR: {e}")
 
 
-	# msg = bot.get_messages('Timiys', 652)
-	# print(str(msg.media).replace('MessageMediaType.','').strip())
+	msg = bot.get_messages('Timiys', 677)
+	print(str(msg.media).replace('MessageMediaType.','').strip())
 
