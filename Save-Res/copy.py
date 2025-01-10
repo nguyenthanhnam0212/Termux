@@ -15,6 +15,7 @@ api_id = os.getenv('API_ID')
 mess_end = os.getenv('MSG_ID')
 user_name = os.getenv('USER_NAME')
 inf = links_force(username=user_name).get_inf()
+media_list = inf.media_type.split(",")
 target_id = inf.target_channel
 mess_id = inf.msgid
 
@@ -31,7 +32,7 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
     chat = bot.get_chat(user_name)
     print(f"From: {user_name}\nTo: {target_id}\n\nForwarding......")
     for i in tqdm(range(mess_id, int(mess_end) + 1), desc="Forwarding", unit="Post"):
-        if get_message_type(user_name = user_name, mess_id = mess_id) in inf.media_type.split(","):
+        if get_message_type(user_name = user_name, mess_id = mess_id) in media_list:
             try:
                 bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=mess_id)
                 print(f"\r{i} / {mess_end}  ", end='', flush=True)

@@ -20,11 +20,3 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 	except Exception as e:
 		print(f"ERROR: {e}")
 
-
-	# msg = bot.get_messages('Timiys', mess_id)
-	# print(str(msg.media))
-
-	# #MessageMediaType.PHOTO
-	# #MessageMediaType.VIDEO
-
-
