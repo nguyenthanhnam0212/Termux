@@ -34,7 +34,7 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
     for i in tqdm(range(mess_id, int(mess_end) + 1), desc="Forwarding", unit="Post"):
         if get_message_type(user_name = user_name, mess_id = mess_id) in media_list:
             try:
-                bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=mess_id)
+                bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i)
                 print(f"\r{i} / {mess_end}  ", end='', flush=True)
             except Exception as e:
                 print(f"\rERROR: {i} / {e}  ", end='', flush=True)
