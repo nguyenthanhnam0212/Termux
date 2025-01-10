@@ -22,5 +22,5 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 
 
 	# msg = bot.get_messages('Timiys', 652)
-	# print(str(msg.media))
+	# print(str(msg.media).replace('MessageMediaType.','').strip())
 
