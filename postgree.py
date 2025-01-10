@@ -19,6 +19,7 @@ class save_links(Base):
     links = Column(String)
     username = Column(String)
     msgid = Column(Integer)
+    msgid_end = Column(Integer)
     target_channel = Column(BigInteger)
     media_type = Column(String)
     note = Column(String)
@@ -29,17 +30,18 @@ Base.metadata.create_all(engine)
 
 
 class links_force():
-    def __init__(self, links = None, username = None, msgid = None, target_channel = None, media_type = None, note = None, status = 1):
+    def __init__(self, links = None, username = None, msgid = None, msgid_end = None ,target_channel = None, media_type = None, note = None, status = 1):
         self.links = links
         self.username = username
         self.msgid = msgid
+        self.msgid_end = msgid_end
         self.target_channel = target_channel
         self.media_type = media_type
         self.note = note
         self.status = status
 
     def save_to_links(self):
-        sql = save_links(links = self.links, username = self.username, msgid = self.msgid, target_channel = self.target_channel, media_type = self.media_type, note = self.note, status = self.status)
+        sql = save_links(links = self.links, username = self.username, msgid = self.msgid, msgid_end = self.msgid_end, target_channel = self.target_channel, media_type = self.media_type, note = self.note, status = self.status)
         session.add(sql)
         session.commit()
         session.close()
@@ -59,7 +61,7 @@ class links_force():
         session.close()
 
     def get_all_record(self):
-        record = session.query(save_links).all()
+        record = session.query(save_links).filter(save_links.status == 1).all()
         return record
 
 session.close()

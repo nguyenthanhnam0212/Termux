@@ -7,17 +7,24 @@ import time
 from sqlite_db import links_force
 
 load_dotenv()
-
 bot_token = os.getenv('TOKEN')
 api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 
-mess_end = os.getenv('MSG_ID')
-user_name = os.getenv('USER_NAME')
-inf = links_force(username=user_name).get_inf()
+db = links_force().get_all_record()
+for i in db:
+    print(f"{i.id} - {i.username}")
+
+selected_id = input("Chose id....: ")
+inf = links_force.get_inf(id = selected_id)
+user_name = inf.username
+mess_id = inf.msgid
+if inf.msgid_end is None or inf.msgid_end == inf.msgid:
+    mess_end = mess_id + 100
+else:
+    mess_end = inf.msgid_end
 media_list = inf.media_type.upper().split(",")
 target_id = inf.target_channel
-mess_id = inf.msgid
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
 

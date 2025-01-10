@@ -6,7 +6,7 @@ def sqlite_to_postgree():
     try:
         postgree_links_force().truncate_save_links()
         for r in rc:
-            postgree_links_force(links = r.links, username = r.username, msgid = r.msgid, target_channel = r.target_channel, media_type = r.media_type, note = r.note, status = r.status).save_to_links()
+            postgree_links_force(links = r.links, username = r.username, msgid = r.msgid, msgid_end=r.msgid_end, target_channel = r.target_channel, media_type = r.media_type, note = r.note, status = r.status).save_to_links()
     except:
         result = 'Sync failed'
     result = 'Sync successful'
@@ -17,7 +17,7 @@ def postgree_to_sqlite():
     try:
         sqlite_links_force().truncate_save_links()
         for r in rc:
-            sqlite_links_force(links = r.links, username = r.username, msgid = r.msgid, target_channel = r.target_channel, media_type = r.media_type, note = r.note, status = r.status).save_to_links()
+            sqlite_links_force(links = r.links, username = r.username, msgid = r.msgid, msgid_end=r.msgid_end, target_channel = r.target_channel, media_type = r.media_type, note = r.note, status = r.status).save_to_links()
     except:
         result = 'Sync failed'
     result = 'Sync successful'
