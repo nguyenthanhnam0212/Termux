@@ -19,7 +19,7 @@ selected_id = input("Chose id....: ")
 inf = links_force.get_inf(id = selected_id)
 user_name = inf.username
 mess_id = inf.msgid
-if inf.msgid_end is None or inf.msgid_end == inf.msgid:
+if inf.msgid_end is None or inf.msgid_end == inf.msgid or inf.msgid_end < inf.msgid:
     mess_end = mess_id + 100
 else:
     mess_end = inf.msgid_end
