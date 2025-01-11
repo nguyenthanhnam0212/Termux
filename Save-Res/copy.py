@@ -13,7 +13,7 @@ api_id = os.getenv('API_ID')
 
 db = links_force().get_all_record()
 for i in db:
-    print(f"{i.id} - {i.username}")
+    print(f"{i.id} - {i.username} - {i.media_type}")
 
 selected_id = input("Chose id....: ")
 inf = links_force.get_inf(id = selected_id)
