@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from tqdm import tqdm
 import time
-import sys
 
 from sqlite_db import links_force
 
@@ -40,6 +39,5 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                 print(f"\r{i} / {mess_end}  ", end='', flush=True)
             except Exception as e:
                 print(f"ERROR: {i}")
-                sys.exit(0)
             links_force(username=user_name, msgid=i).update_links()
             time.sleep(3)
