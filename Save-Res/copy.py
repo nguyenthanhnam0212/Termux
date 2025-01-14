@@ -30,7 +30,7 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 
     chat = bot.get_chat(user_name)
     print(f"From: {user_name}\nTo: {target_id}\n\nForwarding......")
-    for i in tqdm(range(int(mess_id), int(mess_end)+1), desc="Forwarding", unit="Post"):
+    for i in tqdm(range(int(mess_id), int(mess_end)+1), desc = i, unit="Post"):
         msg = bot.get_messages(user_name, i)
         type_media = str(msg.media).replace('MessageMediaType.','').strip()
         if type_media in media_list:
