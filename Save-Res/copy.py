@@ -13,13 +13,13 @@ api_id = os.getenv('API_ID')
 
 db = links_force().get_all_record()
 for i in db:
-    print(f"{i.id} - {i.username}")
+    print(f"{i.id} - {i.username} - {i.media_type}")
 
 selected_id = input("Chose id....: ")
 inf = links_force.get_inf(id = selected_id)
 user_name = inf.username
 mess_id = inf.msgid
-if inf.msgid_end is None or inf.msgid_end == inf.msgid:
+if inf.msgid_end is None or inf.msgid_end <= inf.msgid:
     mess_end = mess_id + 100
 else:
     mess_end = inf.msgid_end
@@ -39,5 +39,5 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                 print(f"\r{i} / {mess_end}  ", end='', flush=True)
             except Exception as e:
                 print(f"ERROR: {i}")
-            links_force(username=os.getenv('USER_NAME'), msgid=i).update_links()
+            links_force(username=user_name, msgid=i).update_links()
             time.sleep(3)
