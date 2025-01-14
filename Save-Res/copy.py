@@ -16,6 +16,7 @@ for i in db:
     print(f"{i.id} - {i.username} - {i.media_type}")
 
 selected_id = input("Chose id....: ")
+os.system('cls' if os.name == 'nt' else 'clear')
 inf = links_force.get_inf(id = selected_id)
 user_name = inf.username
 mess_id = inf.msgid
