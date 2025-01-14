@@ -30,7 +30,7 @@ target_id = inf.target_channel
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
     chat = bot.get_chat(user_name)
-    print(f"From: {user_name}\nTo: {target_id}\n\n{tools.show_IP()}\n\nForwarding......")
+    print(f"From: {user_name}\nTo: {target_id}\n\nIP: {tools.show_IP()}\n\nForwarding......")
     for i in tqdm(range(int(mess_id), int(mess_end)+1), desc = "....", unit="Post"):
         msg = bot.get_messages(user_name, i)
         type_media = str(msg.media).replace('MessageMediaType.','').strip()
