@@ -44,7 +44,10 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 
             if type_media in media_list:
                 try:
-                    bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = caption)
+                    if 'fc2' in caption or 'FC2' in caption:
+                        bot.copy_message(chat_id=-1001900564897, from_chat_id=chat.id, message_id=i, caption = caption)
+                    else:
+                        bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = caption)
                     print(f"\r{i} / {mess_end}  ", end='', flush=True)
                 except Exception as e:
                     print(f"ERROR: {i}")
