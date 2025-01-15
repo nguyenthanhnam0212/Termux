@@ -39,7 +39,7 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 
         caption = ""
         if type_media == 'VIDEO':
-            caption = f"{msg.caption}\n{msg.video.file_name}"
+            caption = f"{msg.caption}\n{(msg.video.file_name)[:-4]}"
 
         if type_media in media_list:
             try:
