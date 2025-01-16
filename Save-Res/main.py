@@ -138,11 +138,11 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 					return
 				try:
 					if '?single' not in message.text:
-						bot.copy_message(-1001723907536, msg.chat.id, msg.id)
-						# bot.copy_message(message.chat.id, msg.chat.id, msg.id)
+						# bot.copy_message(-1001723907536, msg.chat.id, msg.id)
+						bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 					else:
-						bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
-						# bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
+						# bot.copy_media_group(-1001723907536, msg.chat.id, msg.id)
+						bot.copy_media_group(message.chat.id, msg.chat.id, msg.id)
 				except:
 					if acc is None:
 						bot.send_message(message.chat.id,f"**String Session is not Set**")
