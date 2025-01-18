@@ -49,6 +49,7 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                     if 'fc2' in caption or 'FC2' in caption:
                         bot.copy_message(chat_id=-1001900564897, from_chat_id=chat.id, message_id=i, caption = caption)
                     elif re.search(r"\d{6}[_-]\d{2,3}", caption):
+                        print(i)
                         arry = re.findall(r"\d{6}[_-]\d{2,3}", caption)
                         for code in arry:
                             if jav_porn.check_exist(code) == False:
