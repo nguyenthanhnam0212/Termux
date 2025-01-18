@@ -8,9 +8,9 @@ bot_token = os.getenv('TOKEN')
 api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 
-user_name = 'taiwanvietnamVIP'
-target_id = -1002333974972
-mess_id = 118821
+user_name = 'laosijighs'
+target_id = -1002280926246
+mess_id = 16205
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
 	chat = bot.get_chat(user_name)
@@ -23,4 +23,3 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 
 	# msg = bot.get_messages('Timiys', 677)
 	# print(str(msg.media).replace('MessageMediaType.','').strip())
-

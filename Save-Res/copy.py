@@ -3,7 +3,9 @@ import os
 from dotenv import load_dotenv
 from tqdm import tqdm
 import time
+import re
 
+from postgree import jav_porn
 from sqlite_db import links_force
 from tools import tools
 
@@ -46,6 +48,12 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                 try:
                     if 'fc2' in caption or 'FC2' in caption:
                         bot.copy_message(chat_id=-1001900564897, from_chat_id=chat.id, message_id=i, caption = caption)
+                    elif re.search(r"\d{6}[_-]\d{2,3}", caption):
+                        arry = re.findall(r"\d{6}[_-]\d{2,3}", caption)
+                        for code in arry:
+                            if jav_porn.check_exist(code) == False:
+                                bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
+                                break
                     else:
                         bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = caption)
                     print(f"\r{i} / {mess_end}  ", end='', flush=True)
