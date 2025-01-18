@@ -30,8 +30,8 @@ else:
 media_list = inf.media_type.upper().split(",")
 target_id = inf.target_channel
 
-Uncen = ["TAXD", "RKI", "259LUXU", "STARS", "MMUS", "MISM", "WAAA", "KKBT", "ADN", "200GANA", "NACR", "ATID", "SSIS", "IPX",
-         "MIDE", "PRED", "ABW", "SSNI", "FSDSS", "DASS", "URE", "IPZZ", "HMN", "MIAB", "MIDV"]
+Uncen = ["TAXD", "RKI", "259LUXU", "START", "MMUS", "MISM", "WAAA", "KKBT", "ADN", "200GANA", "NACR", "ATID", "SSIS", "IPX",
+         "MIDE", "PRED", "ABW", "SSNI", "FSDSS", "DASS", "URE", "IPZZ", "HMN", "MIAB", "MIDV", "JUQ"]
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
     chat = bot.get_chat(user_name)
