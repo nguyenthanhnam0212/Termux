@@ -30,6 +30,8 @@ else:
 media_list = inf.media_type.upper().split(",")
 target_id = inf.target_channel
 
+Uncen = ["A", "B", "C"]
+
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
     chat = bot.get_chat(user_name)
     print(f"From: {user_name}\nTo: {target_id}\n\nIP: {tools.show_IP()}\n\nForwarding......")
@@ -54,6 +56,8 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                             if jav_porn.check_exist(code) == False:
                                 bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
                                 break
+                    elif any(element in caption for element in Uncen):
+                        bot.copy_message(chat_id=-1002398906809, from_chat_id=chat.id, message_id=i, caption = caption)
                     else:
                         bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = caption)
                     print(f"\r{i} / {mess_end}  ", end='', flush=True)
