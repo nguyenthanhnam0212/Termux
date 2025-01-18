@@ -30,7 +30,7 @@ else:
 media_list = inf.media_type.upper().split(",")
 target_id = inf.target_channel
 
-Uncen = ["A", "B", "C"]
+Uncen = ["TAXD", "RKI", "259LUXU"]
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
     chat = bot.get_chat(user_name)
