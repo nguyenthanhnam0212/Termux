@@ -61,7 +61,11 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                                 bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
                                 break
                     elif "HEYZO" in caption.upper():
-                        bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
+                        arry = re.findall(r"\d{4}", caption)
+                        for code in arry:
+                            if jav_porn.check_exist(code) == False:
+                                bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
+                                break
                     elif any(element in caption for element in Uncen):
                         bot.copy_message(chat_id=-1002398906809, from_chat_id=chat.id, message_id=i, caption = caption)
                     else:
