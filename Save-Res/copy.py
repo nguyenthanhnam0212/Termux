@@ -22,7 +22,7 @@ for i in db:
 
 selected_id = input("Chose id....: ")
 os.system('cls' if os.name == 'nt' else 'clear')
-inf = links_force.get_inf(id = selected_id)
+inf = links_force.get_inf(id = int(selected_id))
 user_name = inf.username
 mess_id = inf.msgid
 if inf.msgid_end is None or inf.msgid_end <= inf.msgid:
