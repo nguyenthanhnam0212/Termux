@@ -44,7 +44,7 @@ class telegram_porn(Base):
 
 Base.metadata.create_all(engine)
 
-class links_force():
+class links_force:
     def __init__(self, links = None, username = None, msgid = None, msgid_end = None ,target_channel = None, media_type = None, note = None, status = 1):
         self.links = links
         self.username = username
@@ -67,7 +67,7 @@ class links_force():
         session.close()
 
     def get_inf(self):
-        record = session.query(save_links).filter(save_links.status == 1, save_links.username == self.username).first()
+        record = session.query(save_links).filter(save_links.status == 1, save_links.id == self.id).first()
         return record
 
     def truncate_save_links(self):
