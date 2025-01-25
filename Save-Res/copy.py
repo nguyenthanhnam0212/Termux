@@ -7,7 +7,8 @@ import re
 import sys
 
 from postgree import jav_porn
-from sqlite_db import links_force
+# from sqlite_db import links_force
+from postgree import links_force
 from tools import tools
 
 load_dotenv()
