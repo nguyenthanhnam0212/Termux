@@ -65,9 +65,9 @@ class links_force:
         session.query(save_links).filter(save_links.username == self.username).update({save_links.msgid: self.msgid})
         session.commit()
         session.close()
-
-    def get_inf(self):
-        record = session.query(save_links).filter(save_links.status == 1, save_links.id == self.id).first()
+    
+    def get_inf(id):
+        record = session.query(save_links).filter(save_links.status == 1, save_links.id == id).first()
         return record
 
     def truncate_save_links(self):
