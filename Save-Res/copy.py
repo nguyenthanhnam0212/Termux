@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from tqdm import tqdm
 import time
 import re
+import sys
 
 from postgree import jav_porn
 from sqlite_db import links_force
@@ -24,7 +25,8 @@ inf = links_force.get_inf(id = selected_id)
 user_name = inf.username
 mess_id = inf.msgid
 if inf.msgid_end is None or inf.msgid_end <= inf.msgid:
-    mess_end = mess_id + 100
+    print("End ID is not valid")
+    sys.exit()
 else:
     mess_end = inf.msgid_end
 media_list = inf.media_type.upper().split(",")
