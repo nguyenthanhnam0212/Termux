@@ -22,7 +22,7 @@ array_media = []
 async def welcome(message):
     await bot.set_chat_menu_button(message.chat.id,  menu_button=None)
     await bot.delete_my_commands(scope=None, language_code=None)
-    await bot.send_message(message.chat.id, '✅ STARTED', parse_mode="Markdown")
+    await bot.send_message(message.chat.id, '❤️', parse_mode="Markdown")
     g_val['command'] = 'start'
 
 @bot.message_handler(commands=['gr'])
