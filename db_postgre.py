@@ -13,8 +13,8 @@ Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 
-class save_links(Base):
-    __tablename__ = "save_links"
+class channel_info(Base):
+    __tablename__ = "channel_info"
     id = Column(Integer, primary_key=True)
     links = Column(String)
     username = Column(String)
@@ -44,8 +44,9 @@ class telegram_porn(Base):
 
 Base.metadata.create_all(engine)
 
-class links_force:
-    def __init__(self, links = None, username = None, msgid = None, msgid_end = None ,target_channel = None, media_type = None, note = None, status = 1):
+class channel:
+    def __init__(self, id = None, links = None, username = None, msgid = None, msgid_end = None ,target_channel = None, media_type = None, note = None, status = 1):
+        self.id = id
         self.links = links
         self.username = username
         self.msgid = msgid
@@ -55,34 +56,37 @@ class links_force:
         self.note = note
         self.status = status
 
-    def save_to_links(self):
-        sql = save_links(links = self.links, username = self.username, msgid = self.msgid, msgid_end = self.msgid_end, target_channel = self.target_channel, media_type = self.media_type, note = self.note, status = self.status)
+    def save_db(self):
+        sql = channel_info(links = self.links, username = self.username, msgid = self.msgid, msgid_end = self.msgid_end, target_channel = self.target_channel, media_type = self.media_type, note = self.note, status = self.status)
         session.add(sql)
         session.commit()
         session.close()
 
     def update_links(self):
-        session.query(save_links).filter(save_links.username == self.username).update({save_links.msgid: self.msgid})
+        session.query(channel_info).filter(channel_info.username == self.username).update({channel_info.msgid: self.msgid})
         session.commit()
         session.close()
     
     def update_msg_end(self):
-        session.query(save_links).filter(save_links.username == self.username).update({save_links.msgid_end: self.msgid_end})
+        session.query(channel_info).filter(channel_info.id == self.id).update({channel_info.msgid_end: self.msgid_end})
         session.commit()
         session.close()
     
     def get_inf(id):
-        record = session.query(save_links).filter(save_links.status == 1, save_links.id == id).first()
+        record = session.query(channel_info).filter(channel_info.status == 1, channel_info.id == id).first()
         return record
 
-    def truncate_save_links(self):
-        session.execute(text("TRUNCATE TABLE save_links RESTART IDENTITY CASCADE"))
+    def truncate_table(self):
+        session.execute(text("TRUNCATE TABLE channel_info RESTART IDENTITY CASCADE"))
         session.commit()
         session.close()
 
-    def get_all_record(self):
-        record = session.query(save_links).filter(save_links.status == 1).all()
+    def get_all(self):
+        record = session.query(channel_info).filter(channel_info.status == 1).all()
         return record
+    
+    def reset():
+        session.rollback()
     
 class jav_porn():
     def __init__(self, file_id_photo = None, file_id_video = None, caption= None, actor = None, video_duration = None, file_size = None, vide_resolution = None, nation = None, note = None, status = 1):
