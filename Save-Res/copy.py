@@ -6,9 +6,8 @@ import time
 import re
 import sys
 
-from postgree import jav_porn
 # from sqlite_db import links_force
-from postgree import links_force
+from db_postgre import channel, jav_porn
 from tools import tools
 
 load_dotenv()
@@ -16,13 +15,13 @@ bot_token = os.getenv('TOKEN')
 api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 
-db = links_force().get_all_record()
+db = channel().get_all()
 for i in db:
     print(f"{i.id} - {i.username} - {i.media_type}")
 
 selected_id = input("Chose id....: ")
 os.system('cls' if os.name == 'nt' else 'clear')
-inf = links_force.get_inf(id = int(selected_id))
+inf = channel.get_inf(id = int(selected_id))
 user_name = inf.username
 mess_id = inf.msgid
 if inf.msgid_end is None or inf.msgid_end <= inf.msgid:
