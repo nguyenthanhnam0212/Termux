@@ -6,5 +6,3 @@ class tools:
             s.connect(("8.8.8.8", 80))
             ip_address = s.getsockname()[0]
         return ip_address
-
-
