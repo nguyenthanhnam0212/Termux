@@ -47,7 +47,7 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
             if type_media in media_list:
                 try:
                     if re.search(r"\d{6}[_-]\d{2,3}", caption) or "HEYZO" in caption.upper():
-                        break
+                        continue
                     else:
                         bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i)
                     print(f"\r{i} / {mess_end}  ", end='', flush=True)
