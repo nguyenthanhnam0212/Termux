@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, func, update, BigInteger, desc, text, Numeric 
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, func, update, BigInteger, desc, text, Numeric, select, distinct
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql.expression import and_
@@ -53,13 +53,17 @@ class check():
         session.close()
         return exists
     
-    def check_exist_uncen(id_movie):
+    def check_exist_cen(id_movie):
         regex_pattern = f'\\y{id_movie}\\y'
         exists = session.query(func.count()).filter(jav_censored.status == 1, 
             jav_censored.caption.op('~')(regex_pattern)
         ).scalar() > 0
         session.close()
         return exists
+    
+    def get_studio_cen():
+        result = session.execute(select(distinct(jav_censored.note)).where(jav_censored.note.isnot(None))).scalars().all()
+        return result
 
     def reset():
         session.rollback()
