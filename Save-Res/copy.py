@@ -18,7 +18,7 @@ api_id = os.getenv('API_ID')
 
 db = channel().get_all()
 for i in db:
-    print(f"{i.id} - {i.username} - {i.media_type}")
+    print(f"{i.id} - {i.username} - {i.media_type} - ({i.msgid_end - i.msgid} item)")
 
 selected_id = input("Chose id....: ")
 os.system('cls' if os.name == 'nt' else 'clear')
