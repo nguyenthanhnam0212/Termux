@@ -16,11 +16,6 @@ bot_token = os.getenv('TOKEN')
 api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 
-db = channel().get_all()
-for i in db:
-    print(f"{i.id} - {i.username} - {i.media_type}")
-
-selected_id = input("Chose id....: ")
 os.system('cls' if os.name == 'nt' else 'clear')
 inf = channel.get_inf(id = 13)
 user_name = inf.username
