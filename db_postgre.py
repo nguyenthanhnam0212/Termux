@@ -26,22 +26,6 @@ class channel_info(Base):
     status = Column(Integer)
     __table_args__ = {'extend_existing': True}
 
-
-class telegram_porn(Base):
-    __tablename__ = "telegram_porn"
-    id = Column(Integer, primary_key=True)
-    file_id_photo = Column(String)
-    file_id_video = Column(String)
-    caption = Column(String)
-    actor = Column(String)
-    video_duration = Column(String)
-    file_size = Column(Numeric(10, 2))
-    vide_resolution = Column(String)
-    nation = Column(String)
-    note = Column(String)
-    status = Column(Integer)
-    __table_args__ = {'extend_existing': True}
-
 Base.metadata.create_all(engine)
 
 class channel:
@@ -87,26 +71,5 @@ class channel:
     
     def reset():
         session.rollback()
-    
-class jav_porn():
-    def __init__(self, file_id_photo = None, file_id_video = None, caption= None, actor = None, video_duration = None, file_size = None, vide_resolution = None, nation = None, note = None, status = 1):
-        self.file_id_photo = file_id_photo
-        self.file_id_video = file_id_video
-        self.caption = caption
-        self.actor = actor
-        self.video_duration = video_duration
-        self.file_size = file_size
-        self.vide_resolution = vide_resolution
-        self.nation = nation
-        self.note = note
-        self.status = status
-    
-    def check_exist(id_movie):
-        regex_pattern = f'\\y{id_movie}\\y'  # Using word boundaries for exact match
-        exists = session.query(func.count()).filter(telegram_porn.status == 1,
-            telegram_porn.caption.op('~')(regex_pattern)
-        ).scalar() > 0
-        session.close()
-        return exists
 
 session.close()

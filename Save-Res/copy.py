@@ -7,7 +7,8 @@ import re
 import sys
 
 # from sqlite_db import links_force
-from db_postgre import channel, jav_porn
+from db_postgre import channel
+from db_postgre_aiven import check
 from tools import tools
 
 load_dotenv()
@@ -59,22 +60,22 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
 
             if type_media in media_list:
                 try:
-                    if 'fc2' in caption or 'FC2' in caption:
+                    if 'FC2' in caption.upper():
                         bot.copy_message(chat_id=-1001900564897, from_chat_id=chat.id, message_id=i, caption = caption)
                     elif re.search(r"\d{6}[_-]\d{2,3}", caption):
                         arry = re.findall(r"\d{6}[_-]\d{2,3}", caption)
                         for code in arry:
-                            if jav_porn.check_exist(code) == False:
+                            if check.check_exist(code, 'jav') == False:
                                 bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
                                 break
                     elif "HEYZO" in caption.upper():
                         arry = re.findall(r"\d{4}", caption)
                         for code in arry:
-                            if jav_porn.check_exist(code) == False:
+                            if check.check_exist(code, 'jav') == False:
                                 bot.copy_message(chat_id=-1002280926246, from_chat_id=chat.id, message_id=i, caption = caption)
                                 break
-                    elif any(element in caption for element in Uncen):
-                        bot.copy_message(chat_id=-1002398906809, from_chat_id=chat.id, message_id=i, caption = caption)
+                    # elif any(element in caption for element in Uncen):
+                    #     bot.copy_message(chat_id=-1002398906809, from_chat_id=chat.id, message_id=i, caption = caption)
                     else:
                         bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = caption)
                     print(f"\r{i} / {mess_end}  ", end='', flush=True)
