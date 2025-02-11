@@ -4,4 +4,4 @@ TgCrypto-pyrofork
 flask
 python-dotenv
 psycopg
-psycopg[binary]
+SQLAlchemy
