@@ -17,7 +17,7 @@ api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 
 os.system('cls' if os.name == 'nt' else 'clear')
-inf = channel.get_inf(id = 13)
+inf = channel.get_inf(id = 1)
 user_name = inf.username
 mess_id = inf.msgid
 if inf.msgid_end is None or inf.msgid_end <= inf.msgid:

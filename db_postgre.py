@@ -66,7 +66,7 @@ class channel:
         session.close()
 
     def get_all(self):
-        record = session.query(channel_info).filter(channel_info.status == 1).all()
+        record = session.query(channel_info).filter(channel_info.status == 1).order_by(channel_info.id).all()
         return record
     
     def reset():
