@@ -3,12 +3,7 @@ import os
 from dotenv import load_dotenv
 from tqdm import tqdm
 import time
-import re
-import sys
 
-# from sqlite_db import links_force
-from db_postgre import channel
-from db_postgre_aiven import check
 from tools import tools
 
 load_dotenv()
@@ -18,7 +13,7 @@ api_id = os.getenv('API_ID')
 
 os.system('cls' if os.name == 'nt' else 'clear')
 user_name = "xhxstory"
-mess_start = 4
+mess_start = 163
 mess_end = 1469
 media_list = 'PHOTO'
 target_id = "ai_x_img"
@@ -37,10 +32,10 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
                 try:
                     # bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = msg.caption)
                     bot.copy_message(chat_id=target_id, from_chat_id=chat.id, message_id=i, caption = '')
+                    mess_start += 1
                     print(f"\r{i} / {mess_end}  ", end='', flush=True)
                 except Exception as e:
-                    print(f"ERROR: {i}")
-                channel(username=user_name, msgid=i).update_links()
+                    print(f"msg_id = {mess_start}\nERROR: {i}")
                 time.sleep(3)
     except KeyboardInterrupt:
         print("\nEXIT")
