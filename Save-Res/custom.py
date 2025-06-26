@@ -13,7 +13,7 @@ api_id = os.getenv('API_ID')
 
 os.system('cls' if os.name == 'nt' else 'clear')
 user_name = "xhxstory"
-mess_start = 163
+mess_start = 650
 mess_end = 1469
 media_list = 'PHOTO'
 target_id = "ai_x_img"
