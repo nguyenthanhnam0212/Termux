@@ -8,9 +8,9 @@ bot_token = os.getenv('TOKEN')
 api_hash = os.getenv('API_HASH')
 api_id = os.getenv('API_ID')
 
-user_name = 'laosijighs'
-target_id = -1002280926246
-mess_id = 9123
+user_name = 'xhxstory'
+target_id = -1002507681457
+mess_id = 4
 
 with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token) as bot:
 	chat = bot.get_chat(user_name)
