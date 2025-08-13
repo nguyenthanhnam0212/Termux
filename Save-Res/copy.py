@@ -46,7 +46,8 @@ with Client("save_content_x_bot", api_id=api_id, api_hash=api_hash, bot_token=bo
             type_media = str(msg.media).replace('MessageMediaType.','').strip()
 
             if type_media == 'VIDEO':
-                caption = f"{msg.caption if msg.caption else ""}\n{(msg.video.file_name if msg.video.file_name else "")[:-4]} - {str(round(int(msg.video.file_size) / (1024 ** 3), 2))} GB"
+                # caption = f"{msg.caption if msg.caption else ""}\n{(msg.video.file_name if msg.video.file_name else "")[:-4]} - {str(round(int(msg.video.file_size) / (1024 ** 3), 2))} GB"
+                caption = ""
             elif type_media == 'PHOTO':
                 caption = ""
 
