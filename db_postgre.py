@@ -48,7 +48,7 @@ class channel:
         session.close()
 
     def update_links(self):
-        session.query(channel_info).filter(channel_info.username == self.username).update({channel_info.msgid: self.msgid})
+        session.query(channel_info).filter(channel_info.username == self.username, channel_info.status == 1).update({channel_info.msgid: self.msgid})
         session.commit()
         session.close()
     
