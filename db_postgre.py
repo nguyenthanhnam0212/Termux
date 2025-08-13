@@ -20,7 +20,8 @@ class channel_info(Base):
     username = Column(String)
     msgid = Column(Integer)
     msgid_end = Column(Integer)
-    target_channel = Column(BigInteger)
+    # target_channel = Column(BigInteger)
+    target_channel = Column(String)
     media_type = Column(String)
     note = Column(String)
     status = Column(Integer)
@@ -52,7 +53,7 @@ class channel:
         session.close()
     
     def update_msg_end(self):
-        session.query(channel_info).filter(channel_info.id == self.id).update({channel_info.msgid_end: self.msgid_end})
+        session.query(channel_info).filter(channel_info.id == self.id, channel_info.status == 1).update({channel_info.msgid_end: self.msgid_end})
         session.commit()
         session.close()
     
