@@ -9,8 +9,7 @@ API_ID = os.getenv('API_ID')
 API_HASH = os.getenv('API_HASH')
 BOT_TOKEN = os.getenv('TOKEN')
 
-Lib_dl = os.path.dirname(os.path.abspath(__file__))
-WORKDIR = "/sdcard/Download"
+WORKDIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Client("abyss_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -27,7 +26,7 @@ async def handle_download(client, message):
         # chạy java trong async subprocess
         process = await asyncio.create_subprocess_exec(
             "java", "-jar", "abyss-dl.jar", ID, "h",
-            cwd=Lib_dl
+            cwd=WORKDIR
         )
         await process.wait()
 
