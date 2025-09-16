@@ -51,7 +51,7 @@ async def handle_download(client, message):
             final_actor = ""
             actor = detail.actor.split(",")
             for i in actor:
-                final_actor = final_actor + f"#{i.strip()}   "
+                final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
 
 
         caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
