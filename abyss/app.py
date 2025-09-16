@@ -10,7 +10,7 @@ API_HASH = os.getenv('API_HASH')
 BOT_TOKEN = os.getenv('TOKEN')
 
 # WORKDIR = os.path.dirname(os.path.abspath(__file__))
-WORKDIR = "~/storage/shared/Download"
+WORKDIR = "/sdcard/Download"
 
 app = Client("abyss_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
