@@ -1,6 +1,8 @@
 import os
 import asyncio
 from pyrogram import Client, filters
+from db import _ABYSS
+from pyrogram.types import InputMediaVideo, InputMediaPhoto
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -43,12 +45,43 @@ async def handle_download(client, message):
 
         await message.reply_text("⬆️ Đang upload video lên Telegram...")
 
-        await client.send_video(
+        detail = _ABYSS(movie_code = ID).get_inf()
+
+        if detail.actor is not None or detail.actor != "":
+            final_actor = ""
+            actor = detail.actor.split(",")
+            for i in actor:
+                final_actor = final_actor + f"#{i.strip()}   "
+
+
+        caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
+
+        image = detail.movie_image
+
+        media = [
+            InputMediaPhoto(
+                media=image
+            ),
+            InputMediaVideo(
+                media=latest_file,
+                caption=caption,
+                supports_streaming=True
+            )
+        ]
+
+        await client.send_media_group(
             chat_id=message.chat.id,
-            video=latest_file,
-            caption="✅ Xong!"
+            media=media
         )
 
+        # await client.send_video(
+        #     chat_id=message.chat.id,
+        #     video=latest_file,
+        #     caption=caption,
+        #     supports_streaming=True
+        # )
+
+        _ABYSS(movie_code=ID, status=0).update_status()
         os.remove(latest_file)
 
     except Exception as e:

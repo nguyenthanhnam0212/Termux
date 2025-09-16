@@ -13,64 +13,41 @@ Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 
-class channel_info(Base):
-    __tablename__ = "channel_info"
+class abyss(Base):
+    __tablename__ = "abyss"
     id = Column(Integer, primary_key=True)
-    links = Column(String)
-    username = Column(String)
-    msgid = Column(Integer)
-    msgid_end = Column(Integer)
-    # target_channel = Column(BigInteger)
-    target_channel = Column(String)
-    media_type = Column(String)
-    note = Column(String)
+    movie_name_vi = Column(String)
+    movie_name_en = Column(String)
+    movie_image = Column(String)
+    actor = Column(String)
+    movie_code = Column(String)
     status = Column(Integer)
     __table_args__ = {'extend_existing': True}
 
 Base.metadata.create_all(engine)
 
-class channel:
-    def __init__(self, id = None, links = None, username = None, msgid = None, msgid_end = None ,target_channel = None, media_type = None, note = None, status = 1):
+class _ABYSS:
+    def __init__(self, id = None, movie_name_vi = None, movie_name_en = None, movie_image = None, actor = None, movie_code = None, status = 1):
         self.id = id
-        self.links = links
-        self.username = username
-        self.msgid = msgid
-        self.msgid_end = msgid_end
-        self.target_channel = target_channel
-        self.media_type = media_type
-        self.note = note
+        self.movie_name_vi = movie_name_vi
+        self.movie_name_en = movie_name_en
+        self.movie_image = movie_image
+        self.actor = actor
+        self.movie_code = movie_code
         self.status = status
 
-    def save_db(self):
-        sql = channel_info(links = self.links, username = self.username, msgid = self.msgid, msgid_end = self.msgid_end, target_channel = self.target_channel, media_type = self.media_type, note = self.note, status = self.status)
-        session.add(sql)
-        session.commit()
-        session.close()
-
-    def update_links(self):
-        session.query(channel_info).filter(channel_info.username == self.username, channel_info.status == 1).update({channel_info.msgid: self.msgid})
-        session.commit()
-        session.close()
-    
-    def update_msg_end(self):
-        session.query(channel_info).filter(channel_info.id == self.id, channel_info.status == 1).update({channel_info.msgid_end: self.msgid_end})
-        session.commit()
-        session.close()
-    
-    def get_inf(id):
-        record = session.query(channel_info).filter(channel_info.status == 1, channel_info.id == id).first()
+    def get_inf(self):
+        record = session.query(abyss).filter(abyss.movie_code == self.movie_code, abyss.status == 1).first()
         return record
 
-    def truncate_table(self):
-        session.execute(text("TRUNCATE TABLE channel_info RESTART IDENTITY CASCADE"))
+    def update_status(self):
+        session.query(abyss).filter(abyss.movie_code == self.movie_code).update({abyss.status: self.status})
         session.commit()
         session.close()
-
-    def get_all(self):
-        record = session.query(channel_info).filter(channel_info.status == 1).order_by(channel_info.id).all()
-        return record
     
     def reset():
         session.rollback()
 
 session.close()
+
+
