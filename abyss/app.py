@@ -27,7 +27,44 @@ async def upload_handler(client, message):
         return
     for file in files:
         movie = os.path.join(WORKDIR, file)
-        await message.reply_text(movie)
+        filename = os.path.basename(movie)
+        filename_no_ext = os.path.splitext(filename)[0]
+        movie_code = filename_no_ext.split("_")[0]
+
+        try:
+
+            detail = _ABYSS(movie_code = movie_code).get_inf()
+
+            if detail.actor is not None or detail.actor != "":
+                final_actor = ""
+                actor = detail.actor.split(",")
+                for i in actor:
+                    final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
+
+
+            caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
+
+            image = detail.movie_image
+
+            media = [
+                InputMediaPhoto(
+                    media=image
+                ),
+                InputMediaVideo(
+                    media=movie,
+                    caption=caption,
+                    supports_streaming=True
+                )
+            ]
+
+            await client.send_media_group(
+                chat_id=message.chat.id,
+                media=media
+            )
+            _ABYSS(movie_code=movie_code, status=0).update_status()
+        except:
+            await client.send_video(chat_id=message.chat.id, video=movie, caption=f"`{movie_code}`" ,supports_streaming=True, parse_mode="Markdown")
+        os.remove(movie)
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
@@ -85,14 +122,17 @@ async def handle_download(client, message):
                 chat_id=message.chat.id,
                 media=media
             )
+            _ABYSS(movie_code=ID, status=0).update_status()
         except:
+            filename = os.path.basename(latest_file)
+            filename_no_ext = os.path.splitext(filename)[0]
+            movie_code = filename_no_ext.split("_")[0]
             await client.send_video(
                 chat_id=message.chat.id,
-                video=latest_file,
+                video = latest_file,
+                caption=f"`{movie_code}`",
                 supports_streaming=True
             )
-
-        _ABYSS(movie_code=ID, status=0).update_status()
         os.remove(latest_file)
 
     except Exception as e:
