@@ -45,41 +45,42 @@ async def handle_download(client, message):
 
         await message.reply_text("⬆️ Đang upload video lên Telegram...")
 
-        detail = _ABYSS(movie_code = ID).get_inf()
+        try:
 
-        if detail.actor is not None or detail.actor != "":
-            final_actor = ""
-            actor = detail.actor.split(",")
-            for i in actor:
-                final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
+            detail = _ABYSS(movie_code = ID).get_inf()
+
+            if detail.actor is not None or detail.actor != "":
+                final_actor = ""
+                actor = detail.actor.split(",")
+                for i in actor:
+                    final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
 
 
-        caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
+            caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
 
-        image = detail.movie_image
+            image = detail.movie_image
 
-        media = [
-            InputMediaPhoto(
-                media=image
-            ),
-            InputMediaVideo(
-                media=latest_file,
-                caption=caption,
+            media = [
+                InputMediaPhoto(
+                    media=image
+                ),
+                InputMediaVideo(
+                    media=latest_file,
+                    caption=caption,
+                    supports_streaming=True
+                )
+            ]
+
+            await client.send_media_group(
+                chat_id=message.chat.id,
+                media=media
+            )
+        except:
+            await client.send_video(
+                chat_id=message.chat.id,
+                video=latest_file,
                 supports_streaming=True
             )
-        ]
-
-        await client.send_media_group(
-            chat_id=message.chat.id,
-            media=media
-        )
-
-        # await client.send_video(
-        #     chat_id=message.chat.id,
-        #     video=latest_file,
-        #     caption=caption,
-        #     supports_streaming=True
-        # )
 
         _ABYSS(movie_code=ID, status=0).update_status()
         os.remove(latest_file)
