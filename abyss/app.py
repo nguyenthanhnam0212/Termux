@@ -29,7 +29,7 @@ async def upload_handler(client, message):
         movie = os.path.join(WORKDIR, file)
         await message.reply_text(movie)
 
-@app.on_message(filters.text & ~filters.command())
+@app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
     try:
         ID = message.text.strip()
