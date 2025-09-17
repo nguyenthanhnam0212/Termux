@@ -56,14 +56,14 @@ async def upload_handler(client, message):
                     supports_streaming=True
                 )
             ]
-            await message.reply_text("⬆️ Đang upload video lên Telegram...")
+            await message.reply_text("⬆️ Đang upload video ...")
             await client.send_media_group(
                 chat_id=message.chat.id,
                 media=media
             )
             _ABYSS(movie_code=movie_code, status=0).update_status()
         except:
-            await message.reply_text("⬆️ Đang upload video lên Telegram...")
+            await message.reply_text("⬆️ Đang upload video ...")
             await client.send_video(chat_id=message.chat.id, video=movie, caption=f"`{movie_code}`" ,supports_streaming=True, parse_mode="Markdown")
         os.remove(movie)
 
@@ -91,7 +91,7 @@ async def handle_download(client, message):
             key=os.path.getctime
         )
 
-        await message.reply_text("⬆️ Đang upload video lên Telegram...")
+        await message.reply_text("⬆️ Đang upload video ...")
 
         try:
 
@@ -128,6 +128,7 @@ async def handle_download(client, message):
             filename = os.path.basename(latest_file)
             filename_no_ext = os.path.splitext(filename)[0]
             movie_code = filename_no_ext.split("_")[0]
+            await message.reply_text("⬆️ Đang upload video ...")
             await client.send_video(
                 chat_id=message.chat.id,
                 video = latest_file,
