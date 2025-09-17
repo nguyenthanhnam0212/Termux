@@ -88,4 +88,11 @@ async def handle_download(client, message):
     except Exception as e:
         await message.reply_text(f"❌ Lỗi: {e}")
 
+@app.on_message(filters.command("upload"))
+async def upload_handler(client, message):
+    files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+    for file in files:
+        movie = os.path.join(WORKDIR, files)
+    await message.reply_text(movie)
+
 app.run()
