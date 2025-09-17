@@ -19,7 +19,17 @@ app = Client("abyss_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 async def start_handler(client, message):
     await message.reply_text("Download Video Abyss")
 
-@app.on_message(filters.text & ~filters.command("start"))
+@app.on_message(filters.command("upload"))
+async def upload_handler(client, message):
+    files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+    if not files:
+        await message.reply_text("❌ Không có file nào trong thư mục!")
+        return
+    for file in files:
+        movie = os.path.join(WORKDIR, file)
+        await message.reply_text(movie)
+
+@app.on_message(filters.text & ~filters.command())
 async def handle_download(client, message):
     try:
         ID = message.text.strip()
