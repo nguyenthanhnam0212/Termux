@@ -56,13 +56,14 @@ async def upload_handler(client, message):
                     supports_streaming=True
                 )
             ]
-
+            await message.reply_text("⬆️ Đang upload video lên Telegram...")
             await client.send_media_group(
                 chat_id=message.chat.id,
                 media=media
             )
             _ABYSS(movie_code=movie_code, status=0).update_status()
         except:
+            await message.reply_text("⬆️ Đang upload video lên Telegram...")
             await client.send_video(chat_id=message.chat.id, video=movie, caption=f"`{movie_code}`" ,supports_streaming=True, parse_mode="Markdown")
         os.remove(movie)
 
