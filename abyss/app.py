@@ -87,7 +87,7 @@ async def upload_handler(client, message):
         except:
             await message.reply_text("⬆️ Đang upload video ...")
             await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"`{movie_code}`", parse_mode="Markdown")
-        # os.remove(movie)
+        os.remove(movie)
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
@@ -165,7 +165,7 @@ async def handle_download(client, message):
                 supports_streaming=True,
                 caption=f"`{movie_code}`"
             )
-        # os.remove(latest_file)
+        os.remove(latest_file)
 
     except Exception as e:
         await message.reply_text(f"❌ Lỗi: {e}")
