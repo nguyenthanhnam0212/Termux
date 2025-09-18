@@ -52,6 +52,7 @@ async def upload_handler(client, message):
                 ),
                 InputMediaVideo(
                     media=movie,
+                    supports_streaming=True,
                     caption=caption
                 )
             ]
@@ -63,7 +64,7 @@ async def upload_handler(client, message):
             _ABYSS(movie_code=movie_code, status=0).update_status()
         except:
             await message.reply_text("⬆️ Đang upload video ...")
-            await app.send_video(chat_id=message.chat.id, video=movie, caption=f"`{movie_code}`", parse_mode="Markdown")
+            await app.send_video(chat_id=message.chat.id, video=movie, supports_streaming=True, caption=f"`{movie_code}`", parse_mode="Markdown")
         # os.remove(movie)
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
@@ -113,6 +114,7 @@ async def handle_download(client, message):
                 ),
                 InputMediaVideo(
                     media=latest_file,
+                    supports_streaming=True,
                     caption=caption
                 )
             ]
@@ -130,6 +132,7 @@ async def handle_download(client, message):
             await app.send_video(
                 chat_id=message.chat.id,
                 video = latest_file,
+                supports_streaming=True,
                 caption=f"`{movie_code}`"
             )
         # os.remove(latest_file)
