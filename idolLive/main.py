@@ -73,7 +73,12 @@ id = input("Nhập ID: ")
 
 match len(id.strip()):
     case 10:
-        link = MMLive.get_link(id.strip())
+        for i in data:
+            if str(i['anchorId']) == id.strip():
+                live_type = i['type']
+                liveId = i['liveId']
+                break
+        link = MMLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
     case 19:
         src = YYLive.get_src(id.strip())
         link = YYLive.convert_src(src)
