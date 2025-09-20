@@ -66,7 +66,8 @@ def timer(process):
 idols = Idol.get_inf_idol()
 data = json.loads(idols)['data']
 for i in data:
-    print(f"{i['anchorId']} - {i['anchorNickname']}")
+    if i['anchorId'] not in ["1872165888673222657", "1596373615518302210", "1598549452099416065", "1801235281629249538", "1792202132639969281"]:
+        print(f"{i['anchorId']} - {i['anchorNickname']}")
 
 id = input("Nhập ID: ")
 
