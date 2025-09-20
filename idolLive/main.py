@@ -50,8 +50,6 @@ def record(link, anchor_id):
         stdout=subprocess.DEVNULL,
         stderr=subprocess.STDOUT
     )
-
-    print(f"👉 Đang ghi stream vào: {output}")
     return process
 
 def timer(process):
