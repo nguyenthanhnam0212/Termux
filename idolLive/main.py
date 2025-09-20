@@ -83,5 +83,4 @@ match len(id.strip()):
 process = record(link, id.strip())
 timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
 timer_thread.start()
-
 process.wait()
