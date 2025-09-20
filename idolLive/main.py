@@ -31,6 +31,27 @@ class Idol():
         json_str = json.dumps(result, ensure_ascii=False)
         return json_str
     
+
+def record(link, anchor_id):
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    output = f"/sdcard/Download/{anchor_id}_{timestamp}.mp4"
+
+    process = subprocess.Popen(
+        [
+            "ffmpeg",
+            "-i", link,
+            "-c:v", "copy",
+            "-c:a", "copy",
+            "-y", output
+        ],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.STDOUT
+    )
+
+    print(f"👉 Đang ghi stream vào: {output}")
+    return process
+    
 idols = Idol.get_inf_idol()
 data = json.loads(idols)['data']
 for i in data:
@@ -45,20 +66,6 @@ match len(id.strip()):
         src = YYLive.get_src(id.strip())
         link = YYLive.convert_src(src)
 
-print(link)
 
-timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-output = f"/sdcard/Download/{id.strip()}_{timestamp}.mp4"
-
-process = subprocess.Popen(
-    [
-        "ffmpeg",   # Trên Termux đã cài bằng pkg install ffmpeg
-        "-i", link,
-        "-c:v", "copy",
-        "-c:a", "copy",
-        "-y", output
-    ],
-    stdin=subprocess.PIPE,
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.STDOUT   # hoặc subprocess.DEVNULL nếu không muốn log
-)
+process = record(link, id.strip())
+process.wait()
