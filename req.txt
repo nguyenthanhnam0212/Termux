@@ -6,3 +6,6 @@ python-dotenv
 psycopg
 SQLAlchemy
 tqdm
+pycryptodome
+requests
+wcwidth
