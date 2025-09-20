@@ -1,7 +1,9 @@
 import requests
 import base64
-from Crypto.Cipher import AES
+# from Crypto.Cipher import AES
 from wcwidth import wcswidth
+from Cryptodome.Cipher import AES
+
 
 class YYLive:
 
