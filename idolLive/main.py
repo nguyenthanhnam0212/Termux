@@ -25,8 +25,8 @@ class Idol():
         for i in data:
             if i['type'] in [2, 1]:
                 array_vip.append(i)
-            # else:
-            #     array_nomal.append(i)
+            else:
+                array_nomal.append(i)
         array_dict = array_vip + array_nomal
 
         result = {"data": array_dict}
@@ -66,7 +66,7 @@ def timer(process):
 idols = Idol.get_inf_idol()
 data = json.loads(idols)['data']
 for i in data:
-    if i['anchorId'] not in ["1872165888673222657", "1596373615518302210", "1598549452099416065", "1801235281629249538", "1792202132639969281"]:
+    if i['anchorId'] not in ["2021923813", "2022009695", "2023017337", "2022626776", "1872165888673222657", "1596373615518302210", "1598549452099416065", "1801235281629249538", "1792202132639969281"]:
         print(f"{i['anchorId']} - {i['anchorNickname']}")
 
 id = input("Nhập ID: ")
