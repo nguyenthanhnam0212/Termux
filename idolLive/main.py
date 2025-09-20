@@ -38,15 +38,17 @@ for i in data:
 
 id = input("Nhập ID: ")
 
-match len(id):
+match len(id.strip()):
     case 10:
-        link = MMLive.get_link(id)
+        link = MMLive.get_link(id.strip())
     case 19:
-        src = YYLive.get_src(id)
+        src = YYLive.get_src(id.strip())
         link = YYLive.convert_src(src)
 
+print(link)
+
 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-output = f"/sdcard/Download/{id}_{timestamp}.mp4"
+output = f"/sdcard/Download/{id.strip()}_{timestamp}.mp4"
 
 process = subprocess.Popen(
     [
