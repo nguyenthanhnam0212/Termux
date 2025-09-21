@@ -65,6 +65,6 @@ async def upload_handler(client, message):
         await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file)
 
         os.remove(thumb_file)
-        # os.remove(movie)
+        os.remove(movie)
 
 app.run()
