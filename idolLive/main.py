@@ -5,6 +5,7 @@ import subprocess
 import datetime
 import time
 import threading
+import os
 
 class Idol():
     def get_inf_idol():
@@ -83,7 +84,7 @@ match len(id.strip()):
         src = YYLive.get_src(id.strip())
         link = YYLive.convert_src(src)
 
-
+os.system('cls' if os.name == 'nt' else 'clear')
 process = record(link, id.strip())
 timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
 timer_thread.start()
