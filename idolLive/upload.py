@@ -44,14 +44,11 @@ async def upload_handler(client, message):
         return
     for file in files:
         movie = os.path.join(WORKDIR, file)
-        filename = os.path.basename(movie)
-        filename_no_ext = os.path.splitext(filename)[0]
-        movie_code = filename_no_ext.split("_")[0]
 
         width, height, duration = get_video_info(movie)
 
         await message.reply_text("⬆️ Đang upload video ...")
-        await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"`{movie_code}`", parse_mode="Markdown")
+        await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True)
         # os.remove(movie)
 
 app.run()
