@@ -72,19 +72,24 @@ for i in data:
 
 id = input("Nhập ID: ")
 
+os.system('cls' if os.name == 'nt' else 'clear')
+
+for i in data:
+    if str(i['anchorId']) == id.strip():
+        live_type = i['type']
+        liveId = i['liveId']
+        anchorNickname = i['anchorNickname']
+        break
+
 match len(id.strip()):
     case 10:
-        for i in data:
-            if str(i['anchorId']) == id.strip():
-                live_type = i['type']
-                liveId = i['liveId']
-                break
         link = MMLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
     case 19:
         src = YYLive.get_src(id.strip())
         link = YYLive.convert_src(src)
 
-os.system('cls' if os.name == 'nt' else 'clear')
+print(f"Đang record {anchorNickname}")
+
 process = record(link, id.strip())
 timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
 timer_thread.start()
