@@ -1,6 +1,7 @@
 import requests
 from decode_mmlive import en_de_aes
 from datetime import datetime, timezone, timedelta
+import json
 
 class MMLive:
     token = None   # biến class để giữ token
@@ -77,6 +78,7 @@ class MMLive:
             return f"Error - HTTP {response.status_code}"
         else:
             array_dict = []
+            array_toy = []
             array_nomal = []
             array_vip = []
 
@@ -89,8 +91,11 @@ class MMLive:
                 if i['type'] == 2 or i['type'] == 1:
                     array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['nickname'].ljust(20)}💰", "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "MMLive"})
                 else:
-                    array_nomal.append({"anchorId": i['anchorId'], "anchorNickname": i['nickname'], "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "MMLive"})
-            array_dict = array_vip + array_nomal
+                    if i['toy'] == 1:
+                        array_toy.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['nickname'].ljust(20)}🍆", "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "MMLive"})
+                    else:
+                        array_nomal.append({"anchorId": i['anchorId'], "anchorNickname": i['nickname'], "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "MMLive"})
+            array_dict = array_vip + array_toy+ array_nomal
             return array_dict
 
     @classmethod        

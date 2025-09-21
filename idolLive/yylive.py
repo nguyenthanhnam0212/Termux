@@ -2,7 +2,7 @@ import requests
 import base64
 from Crypto.Cipher import AES
 from wcwidth import wcswidth
-# from Cryptodome.Cipher import AES
+import json
 
 
 class YYLive:
@@ -28,6 +28,8 @@ class YYLive:
             "versionCode": "565"
         }
         response = requests.post(url, headers=headers)
+        # with open(f"full.json", "w", encoding="utf-8") as f:
+        #     f.write(json.dumps(response.json(), ensure_ascii=False, indent=4))
         if response.status_code != 200:
             return f"Error - HTTP {response.status_code}"
         else:
