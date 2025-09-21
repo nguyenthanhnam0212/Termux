@@ -30,6 +30,18 @@ def get_video_info(path: str):
     duration = int(float(stream.get("duration", 0)))
     return width, height, duration
 
+def generate_thumb(video_path: str, thumb_path: str):
+    """
+    Lấy 1 frame làm thumbnail (ví dụ ở giây thứ 5).
+    """
+    cmd = [
+        "ffmpeg", "-y", "-i", video_path,
+        "-ss", "5", "-vframes", "1",
+        "-vf", "scale=320:-1",  # scale nhỏ lại cho nhẹ
+        thumb_path
+    ]
+    subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 app = Client("abyss_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command("start"))
@@ -44,11 +56,15 @@ async def upload_handler(client, message):
         return
     for file in files:
         movie = os.path.join(WORKDIR, file)
+        thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
+        generate_thumb(movie, thumb_file)
 
         width, height, duration = get_video_info(movie)
 
         await message.reply_text("⬆️ Đang upload video ...")
-        await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True)
+        await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file)
+
+        os.remove(thumb_file)
         # os.remove(movie)
 
 app.run()
