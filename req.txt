@@ -7,4 +7,3 @@ tqdm
 pycryptodome
 requests
 wcwidth
-psycopg[binary]
