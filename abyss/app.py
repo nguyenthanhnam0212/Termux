@@ -95,6 +95,8 @@ async def handle_download(client, message):
         ID = message.text.strip()
         await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
+        print(WORKDIR)
+
         # chạy java trong async subprocess
         process = await asyncio.create_subprocess_exec(
             "java", "-jar", "abyss-dl.jar", ID, "h",
