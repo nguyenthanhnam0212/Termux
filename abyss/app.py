@@ -86,7 +86,7 @@ async def upload_handler(client, message):
             _ABYSS(movie_code=movie_code, status=0).update_status()
         except:
             await message.reply_text("⬆️ Đang upload video ...")
-            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"`{movie_code}`", parse_mode="Markdown")
+            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"{movie_code}",)
         os.remove(movie)
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
