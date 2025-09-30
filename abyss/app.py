@@ -31,7 +31,7 @@ def get_video_info(path: str):
     duration = int(float(stream.get("duration", 0)))
     return width, height, duration
 
-app = Client("abyss_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):

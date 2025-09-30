@@ -1,11 +1,10 @@
 pyrogram
-tgcrypto
 TgCrypto-pyrofork
 flask
 python-dotenv
-psycopg
 SQLAlchemy
 tqdm
 pycryptodome
 requests
 wcwidth
+psycopg[binary]
