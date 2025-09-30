@@ -96,10 +96,16 @@ async def handle_download(client, message):
         await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
         # chạy java trong async subprocess
-        process = await asyncio.create_subprocess_exec(
-            "java", "-jar", "abyss-dl.jar", ID, "h",
+        # process = await asyncio.create_subprocess_exec(
+        #     "java", "-jar", "abyss-dl.jar", ID, "h",
+        #     cwd=WORKDIR
+        # )
+
+        process = await asyncio.create_subprocess_shell(
+            f"java -jar abyss-dl.jar {ID} h",
             cwd=WORKDIR
         )
+
         await process.wait()
 
         # tìm file mp4 trong WORKDIR
