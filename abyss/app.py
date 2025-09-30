@@ -102,7 +102,7 @@ async def handle_download(client, message):
         # )
 
         process = await asyncio.create_subprocess_exec(
-            "sh", "-c", f"java -jar abyss-dl.jar {ID} h",
+            "/data/data/com.termux/files/usr/bin/java", "-jar", "abyss-dl.jar", ID, "h",
             cwd=WORKDIR
         )
 
