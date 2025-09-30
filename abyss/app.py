@@ -101,13 +101,10 @@ async def handle_download(client, message):
         #     cwd=WORKDIR
         # )
 
-        process = await asyncio.create_subprocess_exec(
-            "/data/data/com.termux/files/usr/bin/bash", "-lc",
-            f"java -jar abyss-dl.jar {ID} h",
-            cwd=WORKDIR
-        )
+        cmd = f"java -jar abyss-dl.jar {ID} h"
+        subprocess.run(cmd, shell=True, cwd=WORKDIR)
 
-        await process.wait()
+        # await process.wait()
 
         # tìm file mp4 trong WORKDIR
         downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
