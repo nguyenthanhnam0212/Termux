@@ -100,11 +100,10 @@ async def handle_download(client, message):
         #     "java", "-jar", "abyss-dl.jar", ID, "h",
         #     cwd=WORKDIR
         # )
+        # await process.wait()
 
         cmd = f"java -jar abyss-dl.jar {ID} h"
-        subprocess.run(cmd, shell=True, cwd=WORKDIR)
-
-        # await process.wait()
+        await subprocess.run(cmd, shell=True, cwd=WORKDIR)
 
         # tìm file mp4 trong WORKDIR
         downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
