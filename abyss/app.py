@@ -14,7 +14,7 @@ API_HASH = os.getenv('API_HASH')
 BOT_TOKEN = os.getenv('TOKEN')
 
 # WORKDIR = os.path.dirname(os.path.abspath(__file__))
-WORKDIR = "~/storage/shared/Termux/abyss"
+WORKDIR = "~/storage/emulated/0/termux/abyss"
 
 
 def get_video_info(path: str):
