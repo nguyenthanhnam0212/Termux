@@ -13,7 +13,8 @@ API_ID = os.getenv('API_ID')
 API_HASH = os.getenv('API_HASH')
 BOT_TOKEN = os.getenv('TOKEN')
 
-WORKDIR = os.path.dirname(os.path.abspath(__file__))
+# WORKDIR = os.path.dirname(os.path.abspath(__file__))
+WORKDIR = "~/storage/shared/Termux/abyss"
 
 
 def get_video_info(path: str):
@@ -94,8 +95,6 @@ async def handle_download(client, message):
     try:
         ID = message.text.strip()
         await message.reply_text(f"▶️ Đang tải video `{ID}`...")
-
-        print(WORKDIR)
 
         # chạy java trong async subprocess
         process = await asyncio.create_subprocess_exec(
