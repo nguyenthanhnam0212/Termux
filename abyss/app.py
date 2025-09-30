@@ -101,8 +101,8 @@ async def handle_download(client, message):
         #     cwd=WORKDIR
         # )
 
-        process = await asyncio.create_subprocess_shell(
-            f"java -jar abyss-dl.jar {ID} h",
+        process = await asyncio.create_subprocess_exec(
+            "sh", "-c", f"java -jar abyss-dl.jar {ID} h",
             cwd=WORKDIR
         )
 
