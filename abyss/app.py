@@ -67,15 +67,15 @@ async def upload_handler(client, message):
 
             media = [
                 InputMediaPhoto(
-                    media=image
+                    media=image,
+                    caption=caption
                 ),
                 InputMediaVideo(
                     media=movie,
                     width=width,
                     height=height,
                     duration=duration,
-                    supports_streaming=True,
-                    caption=caption
+                    supports_streaming=True
                 )
             ]
             await message.reply_text("⬆️ Đang upload video ...")
@@ -138,15 +138,15 @@ async def handle_download(client, message):
 
             media = [
                 InputMediaPhoto(
-                    media=image
+                    media=image,
+                    caption=caption
                 ),
                 InputMediaVideo(
                     media=latest_file,
                     width=width,
                     height=height,
                     duration=duration,
-                    supports_streaming=True,
-                    caption=caption
+                    supports_streaming=True
                 )
             ]
 
