@@ -38,9 +38,8 @@ async def start_handler(client, message):
     list_ID = ["JUf3vLBjK", "vJm33zc8Hh", "82Q8b9djE", "zHx1_TpvS", "pcN3BKWGC"]
     for ID in list_ID:
         try:
-            ID = message.text.strip()
             await message.reply_text(f"▶️ Đang tải video `{ID}`...")
-
+            
             # chạy java trong async subprocess
             # process = await asyncio.create_subprocess_exec(
             #     "java", "-jar", "abyss-dl.jar", ID, "h",
