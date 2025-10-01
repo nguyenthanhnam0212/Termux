@@ -41,7 +41,8 @@ async def start_handler(client, message):
         {"ID": "2n_AhbKX0", "name_en": "Home Alone 2"},
         {"ID": "2L83abiSA", "name_en": "Home Alone 3"},
         {"ID": "1MVJSYy0C", "name_en": "Home Alone The Holiday Heist"},
-        {"ID": "omqBuyBLr", "name_en": "Mr Vampire 3"}
+        {"ID": "omqBuyBLr", "name_en": "Mr Vampire 3"},
+        {"ID": "3XBll7P5P", "name_en": "Mr Vampire 5 Vampire Vs Vampire"}
         # {"ID": "vCjH_6i6x", "name_en": "Mr Vampire Saga"}
         ]
     for item in list_ID:
