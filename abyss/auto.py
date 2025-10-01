@@ -5,6 +5,7 @@ import asyncio
 from pyrogram import Client, filters
 from db import _ABYSS
 from pyrogram.types import InputMediaVideo, InputMediaPhoto
+from poster import POSTER
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -35,8 +36,16 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = ["PnmYRavq9", "ynqJ1bNGk", "r_HUEVAIQ", "ij1Plu1Ds"]
-    for ID in list_ID:
+    list_ID = [
+        {"ID": "r_HUEVAIQ", "name_en": "The Equalizer"},
+        {"ID": "oSZ0fAx2Z", "name_en": "The Equalizer 2"},
+        {"ID": "ij1Plu1Ds", "name_en": "The Equalizer3"},
+        {"ID": "n6ylOt5EUZ", "name_en": "Mr Vampire"},
+        {"ID": "vCjH_6i6x", "name_en": "Mr Vampire Saga"}
+        ]
+    for item in list_ID:
+        ID = item['ID']
+        name_movie_en = item['name_en']
         try:
             await message.reply_text(f"▶️ Đang tải video `{ID}`...")
             
@@ -64,19 +73,9 @@ async def start_handler(client, message):
             width, height, duration = get_video_info(latest_file)
 
             try:
-
-                detail = _ABYSS(movie_code = ID).get_inf()
-                await message.reply_text("⬆️ Đang upload video kèm Poster ...")
-                if detail.actor is not None or detail.actor != "":
-                    final_actor = ""
-                    actor = detail.actor.split(",")
-                    for i in actor:
-                        final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
-
-
-                caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
-
-                image = detail.movie_image
+                image = POSTER.get_poster(name_movie_en)
+                actor = POSTER.get_actor(name_movie_en)
+                caption = f"({name_movie_en})\n{actor}"
 
                 media = [
                     InputMediaPhoto(
@@ -96,7 +95,6 @@ async def start_handler(client, message):
                     chat_id=message.chat.id,
                     media=media
                 )
-                _ABYSS(movie_code=ID, status=0).update_status()
             except:
                 filename = os.path.basename(latest_file)
                 filename_no_ext = os.path.splitext(filename)[0]
