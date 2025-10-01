@@ -35,7 +35,7 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = ["JUf3vLBjK", "vJm33zc8Hh", "82Q8b9djE", "zHx1_TpvS"]
+    list_ID = ["JUf3vLBjK", "vJm33zc8Hh", "82Q8b9djE", "zHx1_TpvS", "pcN3BKWGC"]
     for ID in list_ID:
         try:
             ID = message.text.strip()
