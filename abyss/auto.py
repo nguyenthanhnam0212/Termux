@@ -35,7 +35,7 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = ["bNU1ydbP_", "nZ0P8zsgU", "zHmirJiVk", "_SYye6i2R", "5ZTPjvx9j"]
+    list_ID = ["nZ0P8zsgU", "zHmirJiVk", "_SYye6i2R", "5ZTPjvx9j"]
     for ID in list_ID:
         try:
             await message.reply_text(f"▶️ Đang tải video `{ID}`...")
