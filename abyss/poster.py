@@ -11,21 +11,19 @@ class POSTER:
         
         response = requests.get(url_search, headers=headers)
         data = response.json()
-        id_movie = ''
 
-        if data['total_results'] == 1:
-            id_movie = data['results'][0]['id']
+        id_movie = data['results'][0]['id']
          
         if id_movie != "":
             url_detail = f'https://api.themoviedb.org/3/movie/{id_movie}'
             response = requests.get(url_detail, headers=headers)
             detail = response.json()
-
-            poster = f"https://image.tmdb.org/t/p/w600_and_h900_bestv2{detail['poster_path']}"
-
+            try:
+                poster = f"https://image.tmdb.org/t/p/w600_and_h900_bestv2{detail['poster_path']}"
+            except:
+                poster = ""   
         else:
             poster = ""
-            
         return poster
     
     def get_actor(name_movie_en):
@@ -43,3 +41,9 @@ class POSTER:
                 ac = i.replace(" ","")
                 actor = actor + f"#{ac}   "
         return actor.strip()
+    
+# name = "The Equalizer 3"
+# X = POSTER.get_poster(name)
+# print(X)
+# Y = POSTER.get_actor(name)
+# print(f"({name})\n{Y}")
