@@ -3,7 +3,6 @@ import json
 import os
 import asyncio
 from pyrogram import Client, filters
-from db import _ABYSS
 from pyrogram.types import InputMediaVideo, InputMediaPhoto
 from poster import POSTER
 
@@ -36,15 +35,7 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = [
-        # {"ID": "1X7nrBTh8", "name_en": "Home Alone"},
-        {"ID": "2n_AhbKX0", "name_en": "Home Alone 2"},
-        {"ID": "2L83abiSA", "name_en": "Home Alone 3"},
-        {"ID": "1MVJSYy0C", "name_en": "Home Alone The Holiday Heist"},
-        {"ID": "omqBuyBLr", "name_en": "Mr Vampire 3"},
-        {"ID": "3XBll7P5P", "name_en": "Mr Vampire 5 Vampire Vs Vampire"}
-        # {"ID": "vCjH_6i6x", "name_en": "Mr Vampire Saga"}
-        ]
+    list_ID = [{'ID': '-lGblBpbd', 'name_en': 'The Expendables'}, {'ID': 'nLPZt1xLK', 'name_en': 'The Expendables 2'}, {'ID': 'wImI0hBEs', 'name_en': 'The Expendables 3'}, {'ID': 'mOm-yulTf', 'name_en': 'The Expendables 4'}]
     for item in list_ID:
         ID = item['ID']
         name_movie_en = item['name_en']
@@ -61,6 +52,8 @@ async def start_handler(client, message):
             cmd = f"java -jar abyss-dl.jar {ID} h"
             subprocess.run(cmd, shell=True, cwd=WORKDIR)
 
+            print("Tải xuống hoàn thành. Tiến hành upload...")
+
             # tìm file mp4 trong WORKDIR
             downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
             if not downloaded_files:
@@ -75,7 +68,11 @@ async def start_handler(client, message):
             width, height, duration = get_video_info(latest_file)
 
             try:
-                image = POSTER.get_poster(name_movie_en)
+                poster = POSTER.get_poster(name_movie_en)
+                if poster != "":
+                    image = poster
+                else:
+                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
                 actor = POSTER.get_actor(name_movie_en)
                 caption = f"({name_movie_en})\n{actor}"
 
@@ -97,6 +94,7 @@ async def start_handler(client, message):
                     chat_id=message.chat.id,
                     media=media
                 )
+                print("Upload thành công")
             except:
                 filename = os.path.basename(latest_file)
                 filename_no_ext = os.path.splitext(filename)[0]
@@ -111,6 +109,7 @@ async def start_handler(client, message):
                     supports_streaming=True,
                     caption=f"`{movie_code}`"
                 )
+                print("Upload thành công")
             os.remove(latest_file)
 
         except Exception as e:

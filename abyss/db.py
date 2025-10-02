@@ -39,6 +39,17 @@ class _ABYSS:
     def get_inf(self):
         record = session.query(abyss).filter(abyss.movie_code == self.movie_code, abyss.status == 1).first()
         return record
+    
+    def get_search(name_movie):
+        record = (
+        session.query(abyss)
+        .filter(
+            abyss.movie_name_vi.like(f"%{name_movie}%"),
+            abyss.status == 1
+        )
+        .all()
+    )
+        return record
 
     def update_status(self):
         session.query(abyss).filter(abyss.movie_code == self.movie_code).update({abyss.status: self.status})
@@ -49,5 +60,11 @@ class _ABYSS:
         session.rollback()
 
 session.close()
+
+X = _ABYSS.get_search("Biệt Đội Đánh")
+result = []
+for i in X:
+    result.append({"ID": i.movie_code, "name_en": i.movie_name_en})
+print(result)
 
 
