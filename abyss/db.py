@@ -61,7 +61,7 @@ class _ABYSS:
 
 session.close()
 
-X = _ABYSS.get_search("Biệt Đội Đánh")
+X = _ABYSS.get_search("Kẻ Cướp Lăng")
 result = []
 for i in X:
     result.append({"ID": i.movie_code, "name_en": i.movie_name_en})
