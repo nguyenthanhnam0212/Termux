@@ -35,7 +35,7 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = [{'ID': 'I3A5gEYHr', 'name_en': 'National Treasure: Book of Secrets'}, {'ID': 'D3g3I25Ri', 'name_en': 'National Treasure'}]
+    list_ID = [{'ID': 'zqvwM2tTR', 'name_en': 'National Treasure: Book of Secrets'}]
     for item in list_ID:
         ID = item['ID']
         name_movie_en = item['name_en']
