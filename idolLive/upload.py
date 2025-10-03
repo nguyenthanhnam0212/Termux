@@ -55,7 +55,7 @@ async def upload_handler(client, message):
     if not files:
         await message.reply_text("❌ Không có file nào trong thư mục!")
         return
-    for file in tqdm(range(int(files), int(files)+1), desc = "....", unit="Post"):
+    for file in files:
         movie = os.path.join(WORKDIR, file)
         thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
         generate_thumb(movie, thumb_file)
