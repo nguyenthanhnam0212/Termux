@@ -3,7 +3,8 @@ import json
 import os
 import asyncio
 from pyrogram import Client, filters
-from db import _ABYSS
+# from db import _ABYSS
+from poster import POSTER
 from pyrogram.types import InputMediaVideo, InputMediaPhoto
 
 from dotenv import load_dotenv
@@ -51,49 +52,16 @@ async def upload_handler(client, message):
 
         width, height, duration = get_video_info(movie)
 
-        try:
-
-            detail = _ABYSS(movie_code = movie_code).get_inf()
-
-            if detail.actor is not None or detail.actor != "":
-                final_actor = ""
-                actor = detail.actor.split(",")
-                for i in actor:
-                    final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
-
-            caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
-
-            image = detail.movie_image
-
-            media = [
-                InputMediaPhoto(
-                    media=image,
-                    caption=caption
-                ),
-                InputMediaVideo(
-                    media=movie,
-                    width=width,
-                    height=height,
-                    duration=duration,
-                    supports_streaming=True
-                )
-            ]
-            await message.reply_text("⬆️ Đang upload video ...")
-            await app.send_media_group(
-                chat_id=message.chat.id,
-                media=media
-            )
-            os.remove(movie)
-            _ABYSS(movie_code=movie_code, status=0).update_status() 
-        except:
-            await message.reply_text("⬆️ Đang upload video ...")
-            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"{movie_code}",)
-            os.remove(movie)
+        await message.reply_text("⬆️ Đang upload video ...")
+        await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"{movie_code}",)
+        os.remove(movie)
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
     try:
-        ID = message.text.strip()
+        mess = message.text.split(":")
+        ID = mess[0]
+        name_movie_en = mess[1]
         await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
         # chạy java trong async subprocess
@@ -119,22 +87,16 @@ async def handle_download(client, message):
 
         width, height, duration = get_video_info(latest_file)
 
-        await message.reply_text("⬆️ Đang upload video ...")
+        await message.reply_text("⬆️ Đang upload video kèm poster...")
 
         try:
-
-            detail = _ABYSS(movie_code = ID).get_inf()
-
-            if detail.actor is not None or detail.actor != "":
-                final_actor = ""
-                actor = detail.actor.split(",")
-                for i in actor:
-                    final_actor = final_actor + f"#{i.replace(" ", "").strip()}   "
-
-
-            caption = f"{detail.movie_name_vi} ({detail.movie_name_en})\n{final_actor}"
-
-            image = detail.movie_image
+            poster = POSTER.get_poster(name_movie_en)
+            if poster != "":
+                image = poster
+            else:
+                image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+            actor = POSTER.get_actor(name_movie_en)
+            caption = f"({name_movie_en})\n{actor}"
 
             media = [
                 InputMediaPhoto(
@@ -154,12 +116,11 @@ async def handle_download(client, message):
                 chat_id=message.chat.id,
                 media=media
             )
-            _ABYSS(movie_code=ID, status=0).update_status()
         except:
             filename = os.path.basename(latest_file)
             filename_no_ext = os.path.splitext(filename)[0]
             movie_code = filename_no_ext.split("_")[0]
-            await message.reply_text("⬆️ Đang upload video ...")
+            await message.reply_text("⬆️ Đang upload video không kèm poster...")
             await app.send_video(
                 chat_id=message.chat.id,
                 video = latest_file,
