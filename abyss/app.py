@@ -59,21 +59,22 @@ async def upload_handler(client, message):
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
     try:
-        mess = message.text.split(":")
-        ID = mess[0]
-        name_movie_en = mess[1]
+        if ":" in message.text:
+            mess = message.text.split(":")
+            ID = mess[0]
+            name_movie_en = mess[1]
+        else:
+            ID = message.text.strip()
+            name_movie_en = ""
         await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
-        # chạy java trong async subprocess
-        # process = await asyncio.create_subprocess_exec(
-        #     "java", "-jar", "abyss-dl.jar", ID, "h",
-        #     cwd=WORKDIR
-        # )
-        # await process.wait()
-
         cmd = f"java -jar abyss-dl.jar {ID} h"
-        subprocess.run(cmd, shell=True, cwd=WORKDIR)
-
+        try:
+            subprocess.run(cmd, shell=True, cwd=WORKDIR)
+        except:
+            await message.reply_text(f"❌ Lỗi không thực hiện download được video")
+            return
+        
         # tìm file mp4 trong WORKDIR
         downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
         if not downloaded_files:
@@ -90,12 +91,16 @@ async def handle_download(client, message):
         await message.reply_text("⬆️ Đang upload video kèm poster...")
 
         try:
-            poster = POSTER.get_poster(name_movie_en)
-            if poster != "":
-                image = poster
+            if name_movie_en != "":
+                poster = POSTER.get_poster(name_movie_en)
+                if poster != "":
+                    image = poster
+                else:
+                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+                actor = POSTER.get_actor(name_movie_en)
             else:
                 image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-            actor = POSTER.get_actor(name_movie_en)
+                actor = ""
             caption = f"({name_movie_en})\n{actor}"
 
             media = [
