@@ -35,24 +35,20 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = [{'ID': 'fBf2AYRfy', 'name_en': 'National Treasure: Book of Secrets'}]
+    list_ID = [{'ID': 'PnmYRavq9', 'name_en': 'Full Throttle'}]
     for item in list_ID:
         ID = item['ID']
         name_movie_en = item['name_en']
         try:
             await message.reply_text(f"▶️ Đang tải video `{ID}`...")
-            
-            # chạy java trong async subprocess
-            # process = await asyncio.create_subprocess_exec(
-            #     "java", "-jar", "abyss-dl.jar", ID, "h",
-            #     cwd=WORKDIR
-            # )
-            # await process.wait()
 
             cmd = f"java -jar abyss-dl.jar {ID} h"
-            subprocess.run(cmd, shell=True, cwd=WORKDIR)
-
-            print("Tải xuống hoàn thành. Tiến hành upload...")
+            try:
+                subprocess.run(cmd, shell=True, cwd=WORKDIR)
+                print("Tải xuống hoàn thành. Tiến hành upload...")
+            except:
+                print("❌ Lỗi không thể tải xuống ....")
+                continue
 
             # tìm file mp4 trong WORKDIR
             downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
@@ -115,4 +111,5 @@ async def start_handler(client, message):
         except Exception as e:
             await message.reply_text(f"❌ Lỗi: {e}")
             print(f"❌ Lỗi: {e}")
+            continue
 app.run()
