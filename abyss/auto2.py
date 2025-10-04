@@ -151,6 +151,4 @@ async def start_handler(client, message):
             await message.reply_text(f"❌ Lỗi: {e}")
             print(f"❌ Lỗi: {e}")
             continue
-
-
 app.run()
