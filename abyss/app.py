@@ -6,6 +6,7 @@ from pyrogram import Client, filters
 # from db import _ABYSS
 from poster import POSTER
 from pyrogram.types import InputMediaVideo, InputMediaPhoto
+import shutil
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -56,6 +57,22 @@ async def upload_handler(client, message):
         await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"{movie_code}",)
         os.remove(movie)
 
+@app.on_message(filters.command("delete"))
+async def delete_handler(client, message):
+    try:
+        for file in os.listdir(WORKDIR):
+            path = os.path.join(WORKDIR, file)
+            if os.path.isfile(path) and file.endswith(".mp4"):
+                os.remove(path)
+            elif os.path.isdir(path):
+                try:
+                    shutil.rmtree(path)
+                except Exception as e:
+                    print(f"Không thể xóa folder {path}: {e}")
+        await message.reply_text(f"🧹 Đã xóa")
+    except Exception as e:
+        await message.reply_text(f"❌ Lỗi khi xóa file: {e}")
+
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
     try:
@@ -88,56 +105,42 @@ async def handle_download(client, message):
 
         width, height, duration = get_video_info(latest_file)
 
-        await message.reply_text("⬆️ Đang upload video kèm poster...")
-
-        try:
-            if name_movie_en != "":
-                poster = POSTER.get_poster(name_movie_en)
-                if poster != "":
-                    image = poster
-                else:
-                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-                actor = POSTER.get_actor(name_movie_en)
+        if name_movie_en != "":
+            poster = POSTER.get_poster(name_movie_en)
+            if poster != "":
+                image = poster
             else:
                 image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-                actor = ""
-            caption = f"({name_movie_en})\n{actor}"
+            actor = POSTER.get_actor(name_movie_en)
+        else:
+            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+            actor = ""
+        caption = f"({name_movie_en})\n{actor}"
 
-            media = [
-                InputMediaPhoto(
-                    media=image,
-                    caption=caption
-                ),
-                InputMediaVideo(
-                    media=latest_file,
-                    width=width,
-                    height=height,
-                    duration=duration,
-                    supports_streaming=True
-                )
-            ]
-
-            await app.send_media_group(
-                chat_id=message.chat.id,
-                media=media
-            )
-        except:
-            filename = os.path.basename(latest_file)
-            filename_no_ext = os.path.splitext(filename)[0]
-            movie_code = filename_no_ext.split("_")[0]
-            await message.reply_text("⬆️ Đang upload video không kèm poster...")
-            await app.send_video(
-                chat_id=message.chat.id,
-                video = latest_file,
+        media = [
+            InputMediaPhoto(
+                media=image,
+                caption=caption
+            ),
+            InputMediaVideo(
+                media=latest_file,
                 width=width,
                 height=height,
                 duration=duration,
-                supports_streaming=True,
-                caption=f"`{movie_code}`"
+                supports_streaming=True
             )
-        os.remove(latest_file)
+        ]
 
+        print("Đang upload !!!")
+        await app.send_media_group(
+            chat_id=message.chat.id,
+            media=media
+        )
+        print("Hoàn thành upload !!!")
+
+        os.remove(latest_file)
     except Exception as e:
         await message.reply_text(f"❌ Lỗi: {e}")
+        print(f"❌ Lỗi: {e}")
 
 app.run()
