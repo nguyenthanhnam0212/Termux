@@ -82,20 +82,20 @@ async def handle_download(client, message):
             name_movie_en = mess[1]
         else:
             ID = message.text.strip()
-            name_movie_en = ""
-        await message.reply_text(f"▶️ Đang tải video `{ID}`...")
+            name_movie_en = ID
+        status_msg  = await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
         cmd = f"java -jar abyss-dl.jar {ID} h"
         try:
             subprocess.run(cmd, shell=True, cwd=WORKDIR)
         except:
-            await message.reply_text(f"❌ Lỗi không thực hiện download được video")
+            await status_msg.edit_text("❌ Lỗi download bằng abyss-dl.jar")
             return
         
         # tìm file mp4 trong WORKDIR
         downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
         if not downloaded_files:
-            await message.reply_text("❌ Không tìm thấy file video sau khi tải!")
+            await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
             return
 
         latest_file = max(
@@ -105,7 +105,7 @@ async def handle_download(client, message):
 
         width, height, duration = get_video_info(latest_file)
 
-        if name_movie_en != "":
+        if (name_movie_en != "") and (name_movie_en != ID):
             poster = POSTER.get_poster(name_movie_en)
             if poster != "":
                 image = poster
@@ -131,7 +131,7 @@ async def handle_download(client, message):
             )
         ]
 
-        print("Đang upload !!!")
+        await status_msg.edit_text(f"Đang upload video: `{ID}`")
         await app.send_media_group(
             chat_id=message.chat.id,
             media=media
