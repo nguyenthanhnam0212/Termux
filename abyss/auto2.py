@@ -56,7 +56,7 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    list_ID = [{'ID': 'q_9D0ifdrJ', 'name_en': 'Kungfu Hustle'}, {'ID': 'my07pqJlC', 'name_en': 'Shaolin Soccer'}, {'ID': 'OrmhFwyxH', 'name_en': 'King Kong'}, {'ID': 's27ZchFjj', 'name_en': 'The Bourne Legacy'}, {'ID': 'h20jdcPg9', 'name_en': 'Safe'}, {'ID': 'OGePcsqcu', 'name_en': 'CJ7'}, {'ID': '6qGX3K5sUr', 'name_en': 'Naked Weapon'}, {'ID': 'OaWcGdeDHu', 'name_en': 'A Chinese Odyssey Part 2: Cinderella'}, {'ID': 'TcIdCDGbxG', 'name_en': 'Fist of Legend'}, {'ID': 'suzqSHzqA', 'name_en': 'Jason Bourne'}, {'ID': '3KczcF_T2', 'name_en': 'From Beijing with Love'}, {'ID': 'OVloH2149', 'name_en': 'Tricky Brains'}, {'ID': 'MN2mjN_JZ', 'name_en': 'God of Gamblers 3 BackTo Shanghai'}]
+    list_ID = [{'ID': 'OrmhFwyxH', 'name_en': 'King Kong'}, {'ID': 's27ZchFjj', 'name_en': 'The Bourne Legacy'}, {'ID': 'h20jdcPg9', 'name_en': 'Safe'}, {'ID': 'OGePcsqcu', 'name_en': 'CJ7'}, {'ID': '6qGX3K5sUr', 'name_en': 'Naked Weapon'}, {'ID': 'OaWcGdeDHu', 'name_en': 'A Chinese Odyssey Part 2: Cinderella'}, {'ID': 'TcIdCDGbxG', 'name_en': 'Fist of Legend'}, {'ID': 'suzqSHzqA', 'name_en': 'Jason Bourne'}, {'ID': '3KczcF_T2', 'name_en': 'From Beijing with Love'}, {'ID': 'OVloH2149', 'name_en': 'Tricky Brains'}, {'ID': 'MN2mjN_JZ', 'name_en': 'God of Gamblers 3 BackTo Shanghai'}]
 
     for item in list_ID:
         ID = item['ID']
