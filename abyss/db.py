@@ -40,12 +40,11 @@ class _ABYSS:
         record = session.query(abyss).filter(abyss.movie_code == self.movie_code, abyss.status == 1).first()
         return record
     
-    def get_search(name_movie):
+    def get_search():
         record = (
         session.query(abyss)
         .filter(
-            abyss.movie_name_vi.like(f"%{name_movie}%"),
-            abyss.status == 1
+            abyss.status == 3
         )
         .all()
     )
@@ -61,7 +60,7 @@ class _ABYSS:
 
 session.close()
 
-X = _ABYSS.get_search("Kho Báu Quốc Gia")
+X = _ABYSS.get_search()
 result = []
 for i in X:
     result.append({"ID": i.movie_code, "name_en": i.movie_name_en})
