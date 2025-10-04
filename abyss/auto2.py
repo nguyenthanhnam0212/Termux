@@ -16,7 +16,6 @@ BOT_TOKEN = os.getenv('TOKEN')
 
 WORKDIR = os.path.dirname(os.path.abspath(__file__))
 
-
 def get_video_info(path: str):
     cmd = [
         "ffprobe", "-v", "error",
@@ -31,7 +30,6 @@ def get_video_info(path: str):
     height = int(stream["height"])
     duration = int(float(stream.get("duration", 0)))
     return width, height, duration
-
 
 # === Progress callback ===
 async def progress_callback(current, total, progress_msg, start_time):
@@ -50,9 +48,7 @@ async def progress_callback(current, total, progress_msg, start_time):
     except:
         pass
 
-
 app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
-
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
