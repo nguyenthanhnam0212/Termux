@@ -95,27 +95,27 @@ async def start_handler(client, message):
                 actor = POSTER.get_actor(name_movie_en)
                 caption = f"({name_movie_en})\n{actor}"
 
-                # gửi poster trước
-                await app.send_photo(
-                    chat_id=message.chat.id,
-                    photo=image,
-                    caption=caption
-                )
-
                 # sau đó upload video có hiển thị % tiến trình
                 progress_msg = await message.reply_text("⬆️ Bắt đầu upload video...")
                 start_time = time.time()
 
-                await app.send_video(
+                media = [
+                    InputMediaPhoto(
+                        media=image,
+                        caption=caption
+                    ),
+                    InputMediaVideo(
+                        media=latest_file,
+                        width=width,
+                        height=height,
+                        duration=duration,
+                        supports_streaming=True
+                    )
+                ]
+
+                await app.send_media_group(
                     chat_id=message.chat.id,
-                    video=latest_file,
-                    width=width,
-                    height=height,
-                    duration=duration,
-                    supports_streaming=True,
-                    caption=f"`{name_movie_en}`",
-                    progress=progress_callback,
-                    progress_args=(progress_msg, start_time)
+                    media=media
                 )
 
                 await progress_msg.edit_text("✅ Upload hoàn thành!")
