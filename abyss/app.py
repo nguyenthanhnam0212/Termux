@@ -75,7 +75,7 @@ async def delete_handler(client, message):
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
-    text = message.text.strip()          # loại bỏ khoảng trắng đầu/cuối
+    text = message.text.strip()
     lines = text.splitlines()
     for i in lines:
         try:
