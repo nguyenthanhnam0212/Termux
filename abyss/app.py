@@ -75,72 +75,75 @@ async def delete_handler(client, message):
 
 @app.on_message(filters.text & ~filters.regex(r"^/"))
 async def handle_download(client, message):
-    try:
-        if ":" in message.text:
-            mess = message.text.split(":")
-            ID = mess[0]
-            name_movie_en = mess[1]
-        else:
-            ID = message.text.strip()
-            name_movie_en = ID
-        status_msg  = await message.reply_text(f"▶️ Đang tải video `{ID}`...")
-
-        cmd = f"java -jar abyss-dl.jar {ID} h"
+    text = message.text.strip()          # loại bỏ khoảng trắng đầu/cuối
+    lines = text.splitlines()
+    for i in lines:
         try:
-            subprocess.run(cmd, shell=True, cwd=WORKDIR)
-        except:
-            await status_msg.edit_text("❌ Lỗi download bằng abyss-dl.jar")
-            return
-        
-        # tìm file mp4 trong WORKDIR
-        downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
-        if not downloaded_files:
-            await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
-            return
+            if ":" in message.text:
+                mess = message.text.split(":")
+                ID = mess[0]
+                name_movie_en = mess[1]
+            else:
+                ID = message.text.strip()
+                name_movie_en = ID
+            status_msg  = await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
-        latest_file = max(
-            [os.path.join(WORKDIR, f) for f in downloaded_files],
-            key=os.path.getctime
-        )
+            cmd = f"java -jar abyss-dl.jar {ID} h"
+            try:
+                subprocess.run(cmd, shell=True, cwd=WORKDIR)
+            except:
+                await status_msg.edit_text("❌ Lỗi download bằng abyss-dl.jar")
+                return
+            
+            # tìm file mp4 trong WORKDIR
+            downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+            if not downloaded_files:
+                await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
+                return
 
-        width, height, duration = get_video_info(latest_file)
+            latest_file = max(
+                [os.path.join(WORKDIR, f) for f in downloaded_files],
+                key=os.path.getctime
+            )
 
-        if (name_movie_en != "") and (name_movie_en != ID):
-            poster = POSTER.get_poster(name_movie_en)
-            if poster != "":
-                image = poster
+            width, height, duration = get_video_info(latest_file)
+
+            if (name_movie_en != "") and (name_movie_en != ID):
+                poster = POSTER.get_poster(name_movie_en)
+                if poster != "":
+                    image = poster
+                else:
+                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+                actor = POSTER.get_actor(name_movie_en)
             else:
                 image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-            actor = POSTER.get_actor(name_movie_en)
-        else:
-            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-            actor = ""
-        caption = f"({name_movie_en})\n{actor}"
+                actor = ""
+            caption = f"({name_movie_en})\n{actor}"
 
-        media = [
-            InputMediaPhoto(
-                media=image,
-                caption=caption
-            ),
-            InputMediaVideo(
-                media=latest_file,
-                width=width,
-                height=height,
-                duration=duration,
-                supports_streaming=True
+            media = [
+                InputMediaPhoto(
+                    media=image,
+                    caption=caption
+                ),
+                InputMediaVideo(
+                    media=latest_file,
+                    width=width,
+                    height=height,
+                    duration=duration,
+                    supports_streaming=True
+                )
+            ]
+
+            await status_msg.edit_text(f"Đang upload video: `{ID}`")
+            await app.send_media_group(
+                chat_id=message.chat.id,
+                media=media
             )
-        ]
+            print("Hoàn thành upload !!!")
 
-        await status_msg.edit_text(f"Đang upload video: `{ID}`")
-        await app.send_media_group(
-            chat_id=message.chat.id,
-            media=media
-        )
-        print("Hoàn thành upload !!!")
-
-        os.remove(latest_file)
-    except Exception as e:
-        await message.reply_text(f"❌ Lỗi: {e}")
-        print(f"❌ Lỗi: {e}")
+            os.remove(latest_file)
+        except Exception as e:
+            await message.reply_text(f"❌ Lỗi: {e}")
+            print(f"❌ Lỗi: {e}")
 
 app.run()
