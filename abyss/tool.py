@@ -13,12 +13,14 @@ class CRAW():
         soup = BeautifulSoup(response.text, 'html.parser')
         zone = soup.find('ul', class_='list-film')
         List_Zone = zone.find_all('div', class_='inner')
+        name = []
         for i in List_Zone:
             a_tag = i.find('a')
             name_vn = a_tag.get('title')
             link = a_tag.get('href')
             name_en = i.find('div', class_='name2').text.strip()
-            print(name_vn, f"https://tvhayd.org{link}", name_en, )
+            name.append(name_vn)
+        return name
 
     def get_url(link):
         response = requests.get(link)
@@ -40,8 +42,8 @@ class CRAW():
         #     link = ""
         # return link
 
-# X = CRAW.add_row(143)
-Y = CRAW.get_url("https://tvhayd.org/phim/nguoi-bao-ve-19985")
+X = CRAW.add_row(143)
+print(X)
 
 
 
