@@ -79,12 +79,12 @@ async def handle_download(client, message):
     lines = text.splitlines()
     for i in lines:
         try:
-            if ":" in message.text:
-                mess = message.text.split(":")
+            if ":" in i:
+                mess = i.split(":")
                 ID = mess[0]
                 name_movie_en = mess[1]
             else:
-                ID = message.text.strip()
+                ID = i.strip()
                 name_movie_en = ID
             status_msg  = await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
