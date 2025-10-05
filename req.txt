@@ -7,3 +7,4 @@ tqdm
 pycryptodome
 requests
 wcwidth
+beautifulsoup4

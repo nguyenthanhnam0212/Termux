@@ -37,7 +37,7 @@ app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=B
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
-    await message.reply_text("Download Video Abyss")
+    await message.reply_text("Download Video Abyss và chuyển vào Channel: -1001810577350")
 
 @app.on_message(filters.command("upload"))
 async def upload_handler(client, message):
@@ -93,13 +93,13 @@ async def handle_download(client, message):
                 subprocess.run(cmd, shell=True, cwd=WORKDIR)
             except:
                 await status_msg.edit_text("❌ Lỗi download bằng abyss-dl.jar")
-                return
+                continue
             
             # tìm file mp4 trong WORKDIR
             downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
             if not downloaded_files:
                 await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
-                return
+                continue
 
             latest_file = max(
                 [os.path.join(WORKDIR, f) for f in downloaded_files],
@@ -145,5 +145,6 @@ async def handle_download(client, message):
         except Exception as e:
             await message.reply_text(f"❌ Lỗi: {e}")
             print(f"❌ Lỗi: {e}")
+            continue
 
 app.run()
