@@ -144,7 +144,7 @@ async def handle_download(client, message):
             os.remove(latest_file)
         except Exception as e:
             await message.reply_text(f"❌ Lỗi: {e}")
-            print(f"❌ Lỗi: {e}")
+            print(f"❌ {i} - Lỗi: {e}")
             continue
 
 app.run()

@@ -42,7 +42,7 @@ class CRAW():
         #     link = ""
         # return link
 
-X = CRAW.add_row(143)
+X = CRAW.add_row(142)
 print(X)
 
 
