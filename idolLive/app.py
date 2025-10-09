@@ -107,7 +107,7 @@ for i in data:
         break
 
 match app:
-    case 'MMlive':
+    case 'MMLive':
         link = MMLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
     case 'YYLive':
         src = YYLive.get_src(id.strip())
