@@ -1,5 +1,7 @@
 from yylive import YYLive
 from mmlive import MMLive
+from hot51 import Hot51
+from qqlive import QQLive
 import json
 import subprocess
 import datetime
@@ -20,8 +22,16 @@ class Idol():
             yylive = YYLive.get_RoomInfo()
         except:
             yylive = []
+        try:
+            qqlive = QQLive.get_RoomInfo()
+        except:
+            qqlive = []
+        try:
+            hot51 = Hot51.get_RoomInfo()
+        except:
+            hot51 = []
 
-        data = mmlive + yylive
+        data = mmlive + yylive + qqlive + hot51
         
         for i in data:
             if i['type'] in [2, 1]:
@@ -93,14 +103,21 @@ for i in data:
         live_type = i['type']
         liveId = i['liveId']
         anchorNickname = i['anchorNickname']
+        app = i['source']
         break
 
-match len(id.strip()):
-    case 10:
+match app:
+    case 'MMlive':
         link = MMLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
-    case 19:
+    case 'YYLive':
         src = YYLive.get_src(id.strip())
         link = YYLive.convert_src(src)
+    case 'Hot51':
+        src = Hot51.get_src(id.strip())
+        link = Hot51.convert_src(src)
+    case 'QQLive':
+        link_decode, key, iv = QQLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
+        link = QQLive.convert_src(link_decode, key, iv)
 
 print(f"Đang record {anchorNickname}")
 
