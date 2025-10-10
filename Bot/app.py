@@ -3,7 +3,7 @@ import re
 from telebot.async_telebot import AsyncTeleBot
 from telebot import types
 
-from sqlite_db import temp_db
+from db_sqlite import temp_db
 
 import os
 from dotenv import load_dotenv
