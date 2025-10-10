@@ -1,6 +1,5 @@
 pyrogram
-TgCrypto
-pyrofork
+TgCrypto-pyrofork
 flask
 python-dotenv
 SQLAlchemy
@@ -10,4 +9,3 @@ requests
 wcwidth
 beautifulsoup4
 pyTelegramBotAPI
-aiosqlite
