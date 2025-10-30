@@ -67,5 +67,5 @@ async def upload_handler(client, message):
 
         os.remove(thumb_file)
         os.remove(movie)
-
+    await message.reply_text("Upload hoàn tất!")
 app.run()
