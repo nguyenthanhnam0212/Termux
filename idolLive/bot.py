@@ -128,4 +128,6 @@ async def handle_download(client, message):
     timer_thread.start()
     process.wait()
 
+    await message.reply_text(f"Đã dừng record:  {anchorNickname}")
+
 app.run()
