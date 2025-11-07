@@ -121,7 +121,7 @@ async def handle_download(client, message):
             link_decode, key, iv = QQLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
             link = QQLive.convert_src(link_decode, key, iv)
 
-    await message.reply_text(f"Đang record {anchorNickname}")
+    await message.reply_text(f"Đang record:  {anchorNickname}")
 
     process = Idol.record(link, id)
     timer_thread = threading.Thread(target=Idol.timer, args=(process,), daemon=True)
