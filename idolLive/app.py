@@ -72,7 +72,7 @@ def timer(process):
         s = elapsed % 60
         print(f"\r⏱️ Đã ghi được: {h:02d}:{m:02d}:{s:02d}", end="", flush=True)
         time.sleep(1)
-    print("\n✅ Quay xong rồi!")
+    print("\n..........................\n")
     
 idols = Idol.get_inf_idol()
 data = json.loads(idols)['data']
