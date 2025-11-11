@@ -120,8 +120,26 @@ match app:
         link = QQLive.convert_src(link_decode, key, iv)
 
 print(f"Đang record {anchorNickname}")
-
-process = record(link, id.strip())
-timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
-timer_thread.start()
-process.wait()
+try:
+    process = record(link, id.strip())
+    timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
+    timer_thread.start()
+    process.wait()
+except:
+    print("Idol chuyển trạng thái phòng")
+    match app:
+        case 'MMLive':
+            link = MMLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
+        case 'YYLive':
+            src = YYLive.get_src(id.strip())
+            link = YYLive.convert_src(src)
+        case 'Hot51':
+            src = Hot51.get_src(id.strip())
+            link = Hot51.convert_src(src)
+        case 'QQLive':
+            link_decode, key, iv = QQLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
+            link = QQLive.convert_src(link_decode, key, iv)
+    process = record(link, id.strip())
+    timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
+    timer_thread.start()
+    process.wait()
