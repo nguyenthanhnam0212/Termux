@@ -89,7 +89,7 @@ def timer(anchor_id, liveId, live_type, source):
         print("❌ Idol offline ngay từ đầu.")
         return
     
-    print("🎬 Bắt đầu ghi file đầu tiên...")
+    print("🎬 Bắt đầu ghi ...")
     process = record(link, anchor_id)
     start_time = time.time()
 
@@ -103,14 +103,13 @@ def timer(anchor_id, liveId, live_type, source):
             print(f"\r⏱️ Đã ghi được: {h:02d}:{m:02d}:{s:02d}", end="", flush=True)
             time.sleep(1)
 
-        print("\n⚠️ FFmpeg stopped — Checking next link...")
         link_new = Idol.link_record(anchor_id, liveId, live_type, source)
 
         if link_new is None:
-            print("❌ Idol offline hoàn toàn — stop record.")
+            print("❌ Idol offline — stop record.")
             break
 
-        print("🔄 Idol vẫn online — bắt đầu ghi file mới...")
+        print("🎬 Bắt đầu ghi file mới ...")
         process = record(link_new, anchor_id)
         start_time = time.time()
 
