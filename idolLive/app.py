@@ -102,8 +102,21 @@ def timer(anchor_id, liveId, live_type, source):
             s = elapsed % 60
             print(f"\r⏱️ Đã ghi được: {h:02d}:{m:02d}:{s:02d}", end="", flush=True)
             time.sleep(1)
+        if source in ["YYLive", "Hot51"]:
+            link_new = Idol.link_record(anchor_id, liveId, live_type, source)
+        elif source == "MMLive":
+            mmlive = MMLive.get_RoomInfo()
+            for i in mmlive:
+                if i in anchor_id:
+                    link_new = Idol.link_record(i['anchor_id'], i['liveId'], i['live_type'], source)
+                    break
+        elif source == "QQLive":
+            qqlive = QQLive.get_RoomInfo()
+            for i in qqlive:
+                if i in anchor_id:
+                    link_new = Idol.link_record(i['anchor_id'], i['liveId'], i['live_type'], source)
+                    break
 
-        link_new = Idol.link_record(anchor_id, liveId, live_type, source)
 
         if link_new is None:
             print("❌ Idol offline — stop record.")
