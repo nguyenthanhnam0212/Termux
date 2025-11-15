@@ -82,7 +82,7 @@ class YYLive:
                 link_play = data['data']['unlLowPa']
             return link_play
         except:
-            return {'Offline'}
+            return 'Offline'
 
     def convert_src(link):
 
