@@ -34,7 +34,7 @@ class Idol():
         data = mmlive + yylive + qqlive + hot51
         
         for i in data:
-            if i['type'] in [2, 1]:
+            if i['type'] in [1, 2]:
                 array_vip.append(i)
             else:
                 array_nomal.append(i)
@@ -43,7 +43,26 @@ class Idol():
         result = {"data": array_dict}
         json_str = json.dumps(result, ensure_ascii=False)
         return json_str
-    
+
+    def link_record(anchor_id, liveId, live_type, source):        
+        match source:
+            case 'MMLive':
+                link = MMLive.get_link(anchorId = anchor_id, liveId= liveId, live_type = live_type)
+            case 'YYLive':
+                src = YYLive.get_src(anchor_id)
+                if src == 'Offline':
+                    return None
+                link = YYLive.convert_src(src)
+            case 'Hot51':
+                src = Hot51.get_src(anchor_id)
+                if src == 'Offline':
+                    return None
+                link = Hot51.convert_src(src)
+            case 'QQLive':
+                link_decode, key, iv = QQLive.get_link(anchorId = anchor_id, liveId= liveId, live_type = live_type)
+                link = QQLive.convert_src(link_decode, key, iv)
+        return link
+
 
 def record(link, anchor_id):
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -63,16 +82,41 @@ def record(link, anchor_id):
     )
     return process
 
-def timer(process):
-    start_time = time.time()
-    while process.poll() is None:  # ffmpeg vẫn đang chạy
-        elapsed = int(time.time() - start_time)
-        h = elapsed // 3600
-        m = (elapsed % 3600) // 60
-        s = elapsed % 60
-        print(f"\r⏱️ Đã ghi được: {h:02d}:{m:02d}:{s:02d}", end="", flush=True)
-        time.sleep(1)
+
+def timer(anchor_id, liveId, live_type, source):
+    link = Idol.link_record(anchor_id, liveId, live_type, source)
+    if link is None:
+        print("❌ Idol offline ngay từ đầu.")
+        return
     
+    print("🎬 Bắt đầu ghi file đầu tiên...")
+    process = record(link, anchor_id)
+    start_time = time.time()
+
+    while True:
+        # FFmpeg đang chạy
+        while process.poll() is None:
+            elapsed = int(time.time() - start_time)
+            h = elapsed // 3600
+            m = (elapsed % 3600) // 60
+            s = elapsed % 60
+            print(f"\r⏱️ Đã ghi được: {h:02d}:{m:02d}:{s:02d}", end="", flush=True)
+            time.sleep(1)
+
+        print("\n⚠️ FFmpeg stopped — Checking next link...")
+        link_new = Idol.link_record(anchor_id, liveId, live_type, source)
+
+        if link_new is None:
+            print("❌ Idol offline hoàn toàn — stop record.")
+            break
+
+        print("🔄 Idol vẫn online — bắt đầu ghi file mới...")
+        process = record(link_new, anchor_id)
+        start_time = time.time()
+
+
+# ===== MAIN PROGRAM ======
+
 idols = Idol.get_inf_idol()
 data = json.loads(idols)['data']
 for i in data:
@@ -105,21 +149,8 @@ for i in data:
         app = i['source']
         break
 
-match app:
-    case 'MMLive':
-        link = MMLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
-    case 'YYLive':
-        src = YYLive.get_src(id.strip())
-        link = YYLive.convert_src(src)
-    case 'Hot51':
-        src = Hot51.get_src(id.strip())
-        link = Hot51.convert_src(src)
-    case 'QQLive':
-        link_decode, key, iv = QQLive.get_link(anchorId = id.strip(), liveId= liveId, live_type = live_type)
-        link = QQLive.convert_src(link_decode, key, iv)
+print(f"🎥 Đang record: {anchorNickname}\n")
 
-print(f"Đang record {anchorNickname}")
-process = record(link, id.strip())
-timer_thread = threading.Thread(target=timer, args=(process,), daemon=True)
+timer_thread = threading.Thread(target=timer, args=(id.strip(), liveId, live_type, app), daemon=True)
 timer_thread.start()
-process.wait()
+timer_thread.join()

@@ -133,7 +133,7 @@ class MMLive:
         body = en_de_aes.encode_request(make_body)
         res = requests.post(url, json=body, headers=header)
         if res.status_code != 200:
-            return f"Error - HTTP {res.status_code}"
+            return None
         else:
             data =  res.json()
             decode_data = en_de_aes.decode_response(data)
