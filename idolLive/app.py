@@ -108,13 +108,13 @@ def timer(anchor_id, liveId, live_type, source):
             mmlive = MMLive.get_RoomInfo()
             for i in mmlive:
                 if i in anchor_id:
-                    link_new = Idol.link_record(i['anchor_id'], i['liveId'], i['live_type'], source)
+                    link_new = Idol.link_record(i['anchorId'], i['liveId'], i['type'], source)
                     break
         elif source == "QQLive":
             qqlive = QQLive.get_RoomInfo()
             for i in qqlive:
                 if i in anchor_id:
-                    link_new = Idol.link_record(i['anchor_id'], i['liveId'], i['live_type'], source)
+                    link_new = Idol.link_record(i['anchorId'], i['liveId'], i['type'], source)
                     break
 
 
