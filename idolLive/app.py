@@ -17,24 +17,28 @@ class Idol():
         try:
             mmlive = MMLive.get_RoomInfo()
             if not isinstance(mmlive, list):
+                print(mmlive)
                 mmlive = []
         except:
             mmlive = []
         try:
             yylive = YYLive.get_RoomInfo()
             if not isinstance(yylive, list):
+                print(yylive)
                 yylive = []
         except:
             yylive = []
         try:
             qqlive = QQLive.get_RoomInfo()
             if not isinstance(qqlive, list):
+                print(qqlive)
                 qqlive = []
         except:
             qqlive = []
         try:
             hot51 = Hot51.get_RoomInfo()
             if not isinstance(hot51, list):
+                print(hot51)
                 hot51 = []
         except:
             hot51 = []
