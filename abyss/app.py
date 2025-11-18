@@ -91,7 +91,7 @@ async def handle_download(client, message):
                     "-y", output
                 ],
                 stdin=subprocess.PIPE,
-                stdout=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT
             )
             process.wait()
@@ -111,7 +111,6 @@ async def handle_download(client, message):
             media = [
                 InputMediaPhoto(
                     media=image,
-                    caption=caption
                 ),
                 InputMediaVideo(
                     media=latest_file,
