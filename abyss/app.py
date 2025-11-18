@@ -7,6 +7,7 @@ from pyrogram import Client, filters
 from poster import POSTER
 from pyrogram.types import InputMediaVideo, InputMediaPhoto
 import shutil
+import datetime
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -78,24 +79,18 @@ async def handle_download(client, message):
     text = message.text.strip()
     lines = text.splitlines()
     for i in lines:
-        try:
-            if ":" in i:
-                mess = i.split(":")
-                ID = mess[0]
-                name_movie_en = mess[1]
-            else:
-                ID = i.strip()
-                name_movie_en = ID
-            status_msg  = await message.reply_text(f"▶️ Đang tải video `{ID}`...")
+        if "m3u8" in i:
+            output = datetime.datetime.now().strftime("video_%Y%m%d_%H%M%S.mp4")
+            url = i.strip()
+            command = [
+                "ffmpeg",
+                "-y",            # overwrite nếu file tồn tại
+                "-i", url,       # input m3u8
+                "-c", "copy",    # không re-encode → rất nhanh
+                output
+            ]
+            subprocess.run(command, shell=True, cwd=WORKDIR)
 
-            cmd = f"java -jar abyss-dl.jar {ID} h"
-            try:
-                subprocess.run(cmd, shell=True, cwd=WORKDIR)
-            except:
-                await status_msg.edit_text("❌ Lỗi download bằng abyss-dl.jar")
-                continue
-            
-            # tìm file mp4 trong WORKDIR
             downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
             if not downloaded_files:
                 await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
@@ -108,18 +103,7 @@ async def handle_download(client, message):
 
             width, height, duration = get_video_info(latest_file)
 
-            if (name_movie_en != "") and (name_movie_en != ID):
-                poster = POSTER.get_poster(name_movie_en)
-                if poster != "":
-                    image = poster
-                else:
-                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-                actor = POSTER.get_actor(name_movie_en)
-            else:
-                image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
-                actor = ""
-            caption = f"({name_movie_en})\n{actor}"
-
+            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
             media = [
                 InputMediaPhoto(
                     media=image,
@@ -133,18 +117,79 @@ async def handle_download(client, message):
                     supports_streaming=True
                 )
             ]
-
-            await status_msg.edit_text(f"Đang upload video: `{ID}`")
             await app.send_media_group(
                 chat_id=message.chat.id,
                 media=media
             )
             print("Hoàn thành upload !!!")
-
             os.remove(latest_file)
-        except Exception as e:
-            await message.reply_text(f"❌ Lỗi: {e}")
-            print(f"❌ {i} - Lỗi: {e}")
-            continue
+        else:
+            try:
+                if ":" in i:
+                    mess = i.split(":")
+                    ID = mess[0]
+                    name_movie_en = mess[1]
+                else:
+                    ID = i.strip()
+                    name_movie_en = ID
+                status_msg  = await message.reply_text(f"▶️ Đang tải video `{ID}`...")
 
+                cmd = f"java -jar abyss-dl.jar {ID} h"
+                try:
+                    subprocess.run(cmd, shell=True, cwd=WORKDIR)
+                except:
+                    await status_msg.edit_text("❌ Lỗi download bằng abyss-dl.jar")
+                    continue
+                
+                # tìm file mp4 trong WORKDIR
+                downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+                if not downloaded_files:
+                    await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
+                    continue
+
+                latest_file = max(
+                    [os.path.join(WORKDIR, f) for f in downloaded_files],
+                    key=os.path.getctime
+                )
+
+                width, height, duration = get_video_info(latest_file)
+
+                if (name_movie_en != "") and (name_movie_en != ID):
+                    poster = POSTER.get_poster(name_movie_en)
+                    if poster != "":
+                        image = poster
+                    else:
+                        image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+                    actor = POSTER.get_actor(name_movie_en)
+                else:
+                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+                    actor = ""
+                caption = f"({name_movie_en})\n{actor}"
+
+                media = [
+                    InputMediaPhoto(
+                        media=image,
+                        caption=caption
+                    ),
+                    InputMediaVideo(
+                        media=latest_file,
+                        width=width,
+                        height=height,
+                        duration=duration,
+                        supports_streaming=True
+                    )
+                ]
+
+                await status_msg.edit_text(f"Đang upload video: `{ID}`")
+                await app.send_media_group(
+                    chat_id=message.chat.id,
+                    media=media
+                )
+                print("Hoàn thành upload !!!")
+
+                os.remove(latest_file)
+            except Exception as e:
+                await message.reply_text(f"❌ Lỗi: {e}")
+                print(f"❌ {i} - Lỗi: {e}")
+                continue
 app.run()
