@@ -85,11 +85,10 @@ async def handle_download(client, message):
             process = subprocess.Popen(
                 [
                     "ffmpeg",
-                    "-y",
                     "-i", url, 
                     "-c:v", "copy",
                     "-c:a", "copy",
-                    output
+                    "-y", output
                 ],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.DEVNULL,
