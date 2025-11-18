@@ -82,15 +82,20 @@ async def handle_download(client, message):
         if "m3u8" in i:
             output = datetime.datetime.now().strftime("video_%Y%m%d_%H%M%S.mp4")
             url = i.strip()
-            command = [
-                "ffmpeg",
-                "-y",            # overwrite nếu file tồn tại
-                "-i", url,       # input m3u8
-                "-c", "copy",    # không re-encode → rất nhanh
-                output
-            ]
-            subprocess.run(command, shell=True, cwd=WORKDIR)
-
+            process = subprocess.Popen(
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-i", url, 
+                    "-c:v", "copy",
+                    "-c:a", "copy",
+                    output
+                ],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.STDOUT
+            )
+            process.wait()
             downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
             if not downloaded_files:
                 await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
