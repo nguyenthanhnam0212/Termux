@@ -94,7 +94,9 @@ async def handle_download(client, message):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT
             )
+            print("Đang tải file ...")
             process.wait()
+            print("Đã tải xong file !!!")
             downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
             if not downloaded_files:
                 await status_msg.edit_text("❌ Không tìm thấy file sau khi download.")
@@ -120,6 +122,7 @@ async def handle_download(client, message):
                     supports_streaming=True
                 )
             ]
+            print("Đang upload file !!!")
             await app.send_media_group(
                 chat_id=message.chat.id,
                 media=media
