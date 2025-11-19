@@ -78,7 +78,7 @@ async def delete_handler(client, message):
 async def handle_download(client, message):
     text = message.text.strip()
     lines = text.splitlines()
-    tap = range(31, 31 + len(lines))
+    tap = range(56, 56 + len(lines))
     for t, i in zip(tap, lines):
         if "m3u8" in i:
             output = datetime.datetime.now().strftime("video_%Y%m%d_%H%M%S.mp4")
