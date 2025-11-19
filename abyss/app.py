@@ -58,6 +58,66 @@ async def upload_handler(client, message):
         await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, caption=f"{movie_code}",)
         os.remove(movie)
 
+@app.on_message(filters.command("hls"))
+async def m3u8_handler(client, message):
+    with open("hls.txt", "r", encoding="utf-8") as file:
+        lines = file.readlines()
+
+        chaps = range(1, 1 + len(lines))
+
+        for chap, line in zip(chaps, lines):
+            url = line.strip()
+            output = datetime.datetime.now().strftime("video_%Y%m%d_%H%M%S.mp4")
+            process = subprocess.Popen(
+                [
+                    "ffmpeg",
+                    "-i", url, 
+                    "-c:v", "copy",
+                    "-c:a", "copy",
+                    "-y", output
+                ],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
+            print(f"Đang tải url: {url}")
+            process.wait()
+            print("Đã tải xong file !!!")
+            downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+            if not downloaded_files:
+                print("❌ Không tìm thấy file sau khi download.")
+                continue
+
+            latest_file = max(
+                [os.path.join(WORKDIR, f) for f in downloaded_files],
+                key=os.path.getctime
+            )
+
+            width, height, duration = get_video_info(latest_file)
+
+            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/Op0qUKIiVVblpFStjc3MpNaDbb.jpg"
+            media = [
+                InputMediaPhoto(
+                    media=image,
+                    caption=f"Tom and Jerry Collections (1940) - {chap}"
+                ),
+                InputMediaVideo(
+                    media=latest_file,
+                    width=width,
+                    height=height,
+                    duration=duration,
+                    supports_streaming=True
+                )
+            ]
+            print("Đang upload file !!!")
+            await app.send_media_group(
+                chat_id=message.chat.id,
+                media=media
+            )
+            print("Hoàn thành upload !!!")
+            os.remove(latest_file)
+
+
 @app.on_message(filters.command("delete"))
 async def delete_handler(client, message):
     try:
