@@ -78,7 +78,7 @@ async def delete_handler(client, message):
 async def handle_download(client, message):
     text = message.text.strip()
     lines = text.splitlines()
-    for i in lines:
+    for n, i in enumerate(lines):
         if "m3u8" in i:
             output = datetime.datetime.now().strftime("video_%Y%m%d_%H%M%S.mp4")
             url = i.strip()
@@ -109,10 +109,11 @@ async def handle_download(client, message):
 
             width, height, duration = get_video_info(latest_file)
 
-            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/JnXbOUfeHUTlPJwZ1euqx9WLYs.jpg"
             media = [
                 InputMediaPhoto(
                     media=image,
+                    caption=f"Tom and Jerry Tales {n+1}"
                 ),
                 InputMediaVideo(
                     media=latest_file,
