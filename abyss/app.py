@@ -114,7 +114,7 @@ async def handle_download(client, message):
             media = [
                 InputMediaPhoto(
                     media=image,
-                    caption=f"Tom and Jerry Tales {t}"
+                    caption=f"Tom and Jerry Tales - {t}"
                 ),
                 InputMediaVideo(
                     media=latest_file,
