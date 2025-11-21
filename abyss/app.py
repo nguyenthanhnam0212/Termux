@@ -117,7 +117,79 @@ async def m3u8_handler(client, message):
             print("Hoàn thành upload !!!")
             os.remove(latest_file)
 
+@app.on_message(filters.command("movie"))
+async def movie_handler(client, message):
+    with open("movie.txt", "r", encoding="utf-8") as file:
+        lines = file.readlines()
+        for i in lines:
+            try:
+                movie_inf = i.split("~")
+                ID = movie_inf[0]
+                name_movie_en = movie_inf[1]
 
+                print(f"👉 Đang tải video `{ID}`...")
+
+                cmd = f"java -jar abyss-dl.jar {ID} h"
+                try:
+                    subprocess.run(cmd, shell=True, cwd=WORKDIR)
+                except:
+                    print("❌ Lỗi download bằng abyss-dl.jar ❌")
+                    continue
+                
+                # tìm file mp4 trong WORKDIR
+                downloaded_files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+                if not downloaded_files:
+                    print("❌ Không tìm thấy file sau khi download.")
+                    continue
+
+                latest_file = max(
+                    [os.path.join(WORKDIR, f) for f in downloaded_files],
+                    key=os.path.getctime
+                )
+
+                width, height, duration = get_video_info(latest_file)
+
+                if (name_movie_en != "") and (name_movie_en != ID):
+                    poster = POSTER.get_poster(name_movie_en)
+                    if poster != "":
+                        image = poster
+                    else:
+                        image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+                    actor = POSTER.get_actor(name_movie_en)
+                else:
+                    image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y2vp0PhvCRY5jF3EiQWwXZ7Lsh8.jpg"
+                    actor = ""
+                caption = f"({name_movie_en})\n{actor}"
+
+                media = [
+                    InputMediaPhoto(
+                        media=image,
+                        caption=caption
+                    ),
+                    InputMediaVideo(
+                        media=latest_file,
+                        width=width,
+                        height=height,
+                        duration=duration,
+                        supports_streaming=True
+                    )
+                ]
+
+                print("👉 Đang upload video `{ID}`")
+                await app.send_media_group(
+                    chat_id=message.chat.id,
+                    media=media
+                )
+                print("Hoàn thành upload !!!")
+
+                os.remove(latest_file)
+            except Exception as e:
+                await message.reply_text(f"❌ Lỗi: {e}")
+                print(f"❌ {i} - Lỗi: {e}")
+                continue
+            
+
+# Xóa toàn bộ file mp4 đã tải về trong folder WORKDIR
 @app.on_message(filters.command("delete"))
 async def delete_handler(client, message):
     try:
@@ -138,8 +210,7 @@ async def delete_handler(client, message):
 async def handle_download(client, message):
     text = message.text.strip()
     lines = text.splitlines()
-    tap = range(56, 56 + len(lines))
-    for t, i in zip(tap, lines):
+    for i in zip(lines):
         if "m3u8" in i:
             output = datetime.datetime.now().strftime("video_%Y%m%d_%H%M%S.mp4")
             url = i.strip()
@@ -174,7 +245,6 @@ async def handle_download(client, message):
             media = [
                 InputMediaPhoto(
                     media=image,
-                    caption=f"Tom and Jerry Tales - {t}"
                 ),
                 InputMediaVideo(
                     media=latest_file,
@@ -184,7 +254,6 @@ async def handle_download(client, message):
                     supports_streaming=True
                 )
             ]
-            print("Đang upload file !!!")
             await app.send_media_group(
                 chat_id=message.chat.id,
                 media=media
