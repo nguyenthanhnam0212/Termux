@@ -144,7 +144,7 @@ async def youtube_handler(client, message):
             return
         for file in files:
             movie = os.path.join(WORKDIR, file)
-            thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
+            thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
 
             width, height, duration = get_video_info(movie)
 
@@ -153,7 +153,7 @@ async def youtube_handler(client, message):
 
             os.remove(thumb_file)
             os.remove(movie)
-            os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp"))
+            os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg"))
     print("Hoàn thành")
 
 @app.on_message(filters.command("movie"))
