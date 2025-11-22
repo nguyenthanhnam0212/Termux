@@ -8,6 +8,7 @@ from poster import POSTER
 from pyrogram.types import InputMediaVideo, InputMediaPhoto
 import shutil
 import datetime
+import yt_dlp
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -33,6 +34,19 @@ def get_video_info(path: str):
     height = int(stream["height"])
     duration = int(float(stream.get("duration", 0)))
     return width, height, duration
+
+
+def generate_thumb(video_path: str, thumb_path: str):
+    """
+    Lấy 1 frame làm thumbnail (ví dụ ở giây thứ 5).
+    """
+    cmd = [
+        "ffmpeg", "-y", "-i", video_path,
+        "-ss", "5", "-vframes", "1",
+        "-vf", "scale=320:-1",  # scale nhỏ lại cho nhẹ
+        thumb_path
+    ]
+    subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 app = Client("save_content_x_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -116,6 +130,50 @@ async def m3u8_handler(client, message):
             )
             print("Hoàn thành upload !!!")
             os.remove(latest_file)
+
+@app.on_message(filters.command("youtube"))
+async def youtube_handler(client, message):
+    playlist_url = "https://www.youtube.com/watch?v=p90V7QNJuX8&list=PLRzZKXQ7FcALbtvVlcKYHVtxpAg_VeGXm"
+
+    with yt_dlp.YoutubeDL({}) as ydl:
+        info = ydl.extract_info(playlist_url, download=False)
+        videos = info["entries"]
+
+    for index in range(1, 11):
+        video = videos[index-1]
+        title = video.get("title")
+        print(f"Đang tải video {index}: {title} ...")
+
+        ydl_opts = {
+            "format": "bv*+ba/b",
+            "merge_output_format": "mp4",
+            "ignoreerrors": True,
+            "continue_dl": True,
+            "outtmpl": f"{index}.%(ext)s",
+            "playlist_items": f"{index}"
+        }
+
+        print(f"Bắt đầu tải video {index} ...")
+
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([playlist_url])
+
+        files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+        if not files:
+            await message.reply_text("❌ Không có file nào trong thư mục!")
+            return
+        for file in files:
+            movie = os.path.join(WORKDIR, file)
+            thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
+            generate_thumb(movie, thumb_file)
+
+            width, height, duration = get_video_info(movie)
+
+            print("Đang upload video ...")
+            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=title)
+
+            os.remove(thumb_file)
+            os.remove(movie)
 
 @app.on_message(filters.command("movie"))
 async def movie_handler(client, message):
