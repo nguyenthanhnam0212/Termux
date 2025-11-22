@@ -134,28 +134,18 @@ async def m3u8_handler(client, message):
 @app.on_message(filters.command("youtube"))
 async def youtube_handler(client, message):
     playlist_url = "https://www.youtube.com/watch?v=p90V7QNJuX8&list=PLRzZKXQ7FcALbtvVlcKYHVtxpAg_VeGXm"
-
-    with yt_dlp.YoutubeDL({}) as ydl:
-        info = ydl.extract_info(playlist_url, download=False)
-        videos = info["entries"]
-
     for index in range(1, 11):
-        video = videos[index-1]
-        title = video.get("title")
-        print(f"Đang tải video {index}: {title} ...")
-
         ydl_opts = {
             "format": "bv*+ba/b",
             "merge_output_format": "mp4",
             "ignoreerrors": True,
             "continue_dl": True,
             "outtmpl": f"{index}.%(ext)s",
-            "playlist_items": f"{index}"
+            "playlist_items": f"{index}"   # Chỉ duy nhất video theo index
         }
 
-        print(f"Bắt đầu tải video {index} ...")
-
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            print(f"Đang tải video {index} từ playlist...")
             ydl.download([playlist_url])
 
         files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
@@ -170,7 +160,7 @@ async def youtube_handler(client, message):
             width, height, duration = get_video_info(movie)
 
             print("Đang upload video ...")
-            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=title)
+            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=f"Thám Tử Lừng Danh Conan - Tập {index}")
 
             os.remove(thumb_file)
             os.remove(movie)
