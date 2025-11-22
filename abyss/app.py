@@ -121,7 +121,7 @@ async def m3u8_handler(client, message):
 @app.on_message(filters.command("youtube"))
 async def youtube_handler(client, message):
     playlist_url = "https://www.youtube.com/watch?v=p90V7QNJuX8&list=PLRzZKXQ7FcALbtvVlcKYHVtxpAg_VeGXm"
-    for index in range(1, 11):
+    for index in range(1, 3):
         ydl_opts = {
             "format": "bv*+ba/b",
             "merge_output_format": "mp4",
@@ -152,6 +152,8 @@ async def youtube_handler(client, message):
 
             os.remove(thumb_file)
             os.remove(movie)
+            os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp"))
+    print("Hoàn thành")
 
 @app.on_message(filters.command("movie"))
 async def movie_handler(client, message):
