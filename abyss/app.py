@@ -121,44 +121,47 @@ async def m3u8_handler(client, message):
 
 @app.on_message(filters.command("youtube"))
 async def youtube_handler(client, message):
-    playlist_url = "https://www.youtube.com/watch?v=p90V7QNJuX8&list=PLRzZKXQ7FcALbtvVlcKYHVtxpAg_VeGXm"
-    for index in range(1, 3):
-        ydl_opts = {
-            "format": "bv*+ba/b",
-            "merge_output_format": "mp4",
-            "ignoreerrors": True,
-            "continue_dl": True,
-            "outtmpl": f"{index}.%(ext)s",
-            "playlist_items": f"{index}",   # Chỉ duy nhất video theo index
-            "writethumbnail": True,           # tải thumbnail
-            "thumbnailformat": "jpg",
-            "cachedir": False,              # không dùng cache
-        }
+    with open("data_youtube.txt", "r", encoding="utf-8") as file:
+        lines = file.readlines()
+        for i, url_play in enumerate(lines):
+            ydl_opts = {
+                "format": "bv*+ba/b",
+                "merge_output_format": "mp4",
+                "ignoreerrors": True,
+                "continue_dl": True,
+                "outtmpl": f"{i+1}.%(ext)s",
+                "writethumbnail": True,           # tải thumbnail
+                "thumbnailformat": "jpg",
+                "cachedir": False,              # không dùng cache
+            }
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            print(f"Đang tải video {index} từ playlist...")
-            ydl.download([playlist_url])
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                print(f"Đang tải video {i+1} từ playlist...")
+                info = ydl.extract_info(url_play, download=True)  # tải video
 
-        files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
-        if not files:
-            await message.reply_text("❌ Không có file nào trong thư mục!")
-            return
-        for file in files:
-            movie = os.path.join(WORKDIR, file)
-            os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg"))
-            thumb_file_webp = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
-            im = Image.open(thumb_file_webp).convert("RGB")
-            im.save(f"{index}.jpg", "JPEG")
-            thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
+                title = info['title']
+                arry_title = title.split("-")
+                caption = f"{arry_title[0].strip()} - {arry_title[1].strip()}\n{arry_title[2].strip()}"
 
-            width, height, duration = get_video_info(movie)
+            files = [f for f in os.listdir(WORKDIR) if f.endswith(".mp4")]
+            if not files:
+                await message.reply_text("❌ Không có file nào trong thư mục!")
+                return
+            for file in files:
+                movie = os.path.join(WORKDIR, file)
+                # os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg"))
+                # thumb_file_webp = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
+                # im = Image.open(thumb_file_webp).convert("RGB")
+                # im.save(f"{index}.jpg", "JPEG")
+                thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
 
-            print("Đang upload video ...")
-            await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=f"Thám Tử Lừng Danh Conan - Tập {index}")
+                width, height, duration = get_video_info(movie)
 
-            os.remove(thumb_file)
-            os.remove(thumb_file_webp)
-            os.remove(movie)
+                print("Đang upload video ...")
+                await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=caption)
+
+                os.remove(thumb_file)
+                os.remove(movie)
 
     print("Hoàn thành")
 
