@@ -151,7 +151,7 @@ async def youtube_handler(client, message):
                 movie = os.path.join(WORKDIR, file)
                 thumb_file_webp = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
                 im = Image.open(thumb_file_webp).convert("RGB")
-                im.save(f"{i}.jpg", "JPEG")
+                im.save(f"{i+1}.jpg", "JPEG")
                 thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
 
                 width, height, duration = get_video_info(movie)
