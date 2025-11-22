@@ -131,6 +131,7 @@ async def youtube_handler(client, message):
             "playlist_items": f"{index}",   # Chỉ duy nhất video theo index
             "writethumbnail": True,           # tải thumbnail
             "thumbnailformat": "jpg",
+            "cachedir": False,              # không dùng cache
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
