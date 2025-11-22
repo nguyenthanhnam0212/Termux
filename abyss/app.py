@@ -149,10 +149,9 @@ async def youtube_handler(client, message):
                 return
             for file in files:
                 movie = os.path.join(WORKDIR, file)
-                # os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg"))
-                # thumb_file_webp = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
-                # im = Image.open(thumb_file_webp).convert("RGB")
-                # im.save(f"{index}.jpg", "JPEG")
+                thumb_file_webp = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
+                im = Image.open(thumb_file_webp).convert("RGB")
+                im.save(f"{i}.jpg", "JPEG")
                 thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
 
                 width, height, duration = get_video_info(movie)
@@ -161,6 +160,7 @@ async def youtube_handler(client, message):
                 await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=caption)
 
                 os.remove(thumb_file)
+                os.remove(thumb_file_webp)
                 os.remove(movie)
 
     print("Hoàn thành")
