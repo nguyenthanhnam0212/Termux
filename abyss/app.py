@@ -122,7 +122,7 @@ async def m3u8_handler(client, message):
 @app.on_message(filters.command("youtube"))
 async def youtube_handler(client, message):
     playlist_url = "https://www.youtube.com/watch?v=p90V7QNJuX8&list=PLRzZKXQ7FcALbtvVlcKYHVtxpAg_VeGXm"
-    for index in range(3, 51):
+    for index in range(1, 3):
         ydl_opts = {
             "format": "bv*+ba/b",
             "merge_output_format": "mp4",
