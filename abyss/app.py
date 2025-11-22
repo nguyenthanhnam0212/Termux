@@ -9,6 +9,7 @@ from pyrogram.types import InputMediaVideo, InputMediaPhoto
 import shutil
 import datetime
 import yt_dlp
+from PIL import Image
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -121,7 +122,7 @@ async def m3u8_handler(client, message):
 @app.on_message(filters.command("youtube"))
 async def youtube_handler(client, message):
     playlist_url = "https://www.youtube.com/watch?v=p90V7QNJuX8&list=PLRzZKXQ7FcALbtvVlcKYHVtxpAg_VeGXm"
-    for index in range(1, 3):
+    for index in range(3, 51):
         ydl_opts = {
             "format": "bv*+ba/b",
             "merge_output_format": "mp4",
@@ -144,7 +145,11 @@ async def youtube_handler(client, message):
             return
         for file in files:
             movie = os.path.join(WORKDIR, file)
-            thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
+            os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg"))
+            thumb_file_webp = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.webp")
+            im = Image.open(thumb_file_webp).convert("RGB")
+            im.save(f"{index}.jpg", "JPEG")
+            thumb_file = os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg")
 
             width, height, duration = get_video_info(movie)
 
@@ -153,7 +158,7 @@ async def youtube_handler(client, message):
 
             os.remove(thumb_file)
             os.remove(movie)
-            os.remove(os.path.join(WORKDIR, f"{os.path.splitext(file)[0]}.jpg"))
+
     print("Hoàn thành")
 
 @app.on_message(filters.command("movie"))

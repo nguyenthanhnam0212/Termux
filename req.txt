@@ -10,3 +10,4 @@ wcwidth
 beautifulsoup4
 pyTelegramBotAPI
 yt-dlp
+Pillow
