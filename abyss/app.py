@@ -136,7 +136,7 @@ async def youtube_handler(client, message):
             }
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                print(f"Đang tải video {i+1} từ playlist...")
+                print(f"⬇️ Tải Xuống ⬇️")
                 info = ydl.extract_info(url_play, download=True)  # tải video
 
                 title = info['title']
@@ -156,14 +156,15 @@ async def youtube_handler(client, message):
 
                 width, height, duration = get_video_info(movie)
 
-                print("Đang upload video ...")
+                print("⬆️ Upload Video ⬆️")
                 await app.send_video(chat_id=message.chat.id, video=movie, width=width, height=height, duration=duration, supports_streaming=True, thumb=thumb_file, caption=caption)
 
                 os.remove(thumb_file)
                 os.remove(thumb_file_webp)
                 os.remove(movie)
+            print(f"✅ Upload Xong Video Thứ {i+1} ✅")
 
-    print("Hoàn thành")
+    print("🏆 Hoàn thành 🏆")
 
 @app.on_message(filters.command("movie"))
 async def movie_handler(client, message):
