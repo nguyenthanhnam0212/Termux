@@ -66,7 +66,7 @@ class Idol():
     def link_record(anchor_id, liveId, live_type, source):        
         match source:
             case 'MMLive':
-                link = MMLive.get_link(anchorId = anchor_id, liveId= liveId, live_type = live_type)
+                link = MMLive.get_link(anchorId = anchor_id, liveId = liveId, live_type = live_type)
             case 'YYLive':
                 src = YYLive.get_src(anchor_id)
                 if src == 'Offline':
@@ -126,21 +126,30 @@ def timer(anchor_id, liveId, live_type, source):
             s = elapsed % 60
             print(f"\r⏱️ Đã ghi được: {h:02d}:{m:02d}:{s:02d}", end="", flush=True)
             time.sleep(1)
-        if source in ["YYLive", "Hot51"]:
+        if source in ["YYLive", "Hot51", "789Live"]:
             link_new = Idol.link_record(anchor_id, liveId, live_type, source)
         elif source == "MMLive":
             mmlive = MMLive.get_RoomInfo()
             for i in mmlive:
-                if i in anchor_id:
-                    link_new = Idol.link_record(i['anchorId'], i['liveId'], i['type'], source)
+                if i['anchorId'] == anchor_id:
+                    try:
+                        link_new = Idol.link_record(i['anchorId'], i['liveId'], i['type'], source)
+                    except:
+                        link_new = None
                     break
+                else:
+                    link_new = None
         elif source == "QQLive":
             qqlive = QQLive.get_RoomInfo()
             for i in qqlive:
-                if i in anchor_id:
-                    link_new = Idol.link_record(i['anchorId'], i['liveId'], i['type'], source)
+                if i['anchorId'] == anchor_id:
+                    try:
+                        link_new = Idol.link_record(i['anchorId'], i['liveId'], i['type'], source)
+                    except:
+                        link_new = None
                     break
-
+                else:
+                    link_new = None
 
         if link_new is None:
             print("❌ Idol offline — stop record.")
