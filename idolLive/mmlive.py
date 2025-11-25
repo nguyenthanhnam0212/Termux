@@ -160,7 +160,7 @@ class MMLive:
                         array_toy.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['nickname'].ljust(20)}🍆", "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "MMLive"})
                     else:
                         array_nomal.append({"anchorId": i['anchorId'], "anchorNickname": i['nickname'], "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "MMLive"})
-            array_dict = array_vip + array_toy+ array_nomal
+            array_dict = array_vip + array_toy + array_nomal
             return array_dict
 
     @classmethod        

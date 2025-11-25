@@ -2,6 +2,7 @@ from yylive import YYLive
 from mmlive import MMLive
 from hot51 import Hot51
 from qqlive import QQLive
+from live789 import _789Live
 import json
 import subprocess
 import datetime
@@ -17,36 +18,42 @@ class Idol():
         try:
             mmlive = MMLive.get_RoomInfo()
             if not isinstance(mmlive, list):
-                print(mmlive)
                 mmlive = []
         except:
             mmlive = []
         try:
             yylive = YYLive.get_RoomInfo()
             if not isinstance(yylive, list):
-                print(yylive)
                 yylive = []
         except:
             yylive = []
         try:
             qqlive = QQLive.get_RoomInfo()
             if not isinstance(qqlive, list):
-                print(qqlive)
                 qqlive = []
         except:
             qqlive = []
         try:
             hot51 = Hot51.get_RoomInfo()
             if not isinstance(hot51, list):
-                print(hot51)
                 hot51 = []
         except:
             hot51 = []
+        try:
+            live789 = _789Live.get_RoomInfo()
+            if not isinstance(live789, list):
+                live789 = []
+        except:
+            live789 = []
 
-        data = mmlive + yylive + qqlive + hot51
+        data = mmlive + yylive + qqlive + hot51 + live789
         
         for i in data:
-            if i['type'] in [1, 2]:
+            if i['type'] == 2 and i['source'] in ["YYLive", "Hot51", "789Live"]:
+                array_vip.append(i)
+            elif i['type'] == 2 and i['source'] in ["MMLive", "QQLive"]:
+                array_vip.append(i)
+            elif i['type'] == 1 and i['source'] in ["MMLive", "QQLive"]:
                 array_vip.append(i)
             else:
                 array_nomal.append(i)
@@ -73,6 +80,11 @@ class Idol():
             case 'QQLive':
                 link_decode, key, iv = QQLive.get_link(anchorId = anchor_id, liveId= liveId, live_type = live_type)
                 link = QQLive.convert_src(link_decode, key, iv)
+            case '789Live':
+                src = _789Live.get_src(anchor_id)
+                if src == 'Offline':
+                    return None
+                link = _789Live.convert_src(src)
         return link
 
 
