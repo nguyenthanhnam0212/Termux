@@ -35,7 +35,7 @@ class _789Live:
             array_vip = []
             for i in data:
                 if i['payType'] == 2:
-                    array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['anchorNickname']}\n💰", "headPortrait": i['coverUrl'], "liveId": "", "type": i['payType'], "source": "789Live"})
+                    array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['anchorNickname'].ljust(20)}💰", "headPortrait": i['coverUrl'], "liveId": "", "type": i['payType'], "source": "789Live"})
                 else:
                     array_nomal.append({"anchorId": i['anchorId'], "anchorNickname": i['anchorNickname'], "headPortrait": i['coverUrl'], "liveId": "", "type": i['payType'], "source": "789Live"})
             array_dict = array_vip + array_nomal

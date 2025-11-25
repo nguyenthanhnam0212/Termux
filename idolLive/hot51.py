@@ -39,7 +39,7 @@ class Hot51:
             for i in data:
                 if (i['jumpType'] != 1 and i['gameType'] == 7) or (i['gameType'] != 1 and i['jumpType'] == 0):
                     if i['payType'] == 2:
-                        array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['anchorNickname']}\n💰", "headPortrait": i['headPortrait'], "liveId": "", "type": i['payType'], "source": "Hot51"})
+                        array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['anchorNickname'].ljust(20)}💰", "headPortrait": i['headPortrait'], "liveId": "", "type": i['payType'], "source": "Hot51"})
                     else:
                         array_nomal.append({"anchorId": i['anchorId'], "anchorNickname": i['anchorNickname'], "headPortrait": i['headPortrait'], "liveId": "", "type": i['payType'], "source": "Hot51"})
             array_dict = array_vip + array_nomal

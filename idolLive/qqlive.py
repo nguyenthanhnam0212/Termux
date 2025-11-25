@@ -156,7 +156,7 @@ class QQLive:
             data = data_decode['data']
             for i in data:
                 if i['type'] == 2 or i['type'] == 1:
-                    array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['nickname']}\n💰", "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "QQLive"})
+                    array_vip.append({"anchorId": i['anchorId'], "anchorNickname": f"{i['nickname'].ljust(20)}💰", "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "QQLive"})
                 else:
                     array_nomal.append({"anchorId": i['anchorId'], "anchorNickname": i['nickname'], "headPortrait": i['avatar'], "liveId": i['liveId'], "type": i['type'], "source": "QQLive"})
             array_dict = array_vip + array_nomal
